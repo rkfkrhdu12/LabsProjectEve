@@ -7,7 +7,7 @@ public class CameraManager : MonoBehaviour
     Transform player;
     Camera mainCamera;
     
-    [SerializeField] float moveSpeed = 4;
+    [SerializeField] float moveSpeed = 7;
 
     private void Start()
     {
@@ -24,8 +24,6 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        transform.LookAt(player);
-
         if (!isCol)
         {
             transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed * Time.deltaTime);

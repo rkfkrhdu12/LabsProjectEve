@@ -27,5 +27,5 @@ public class GameManager : MonoBehaviour
         _intance = this;
     }
 
-    public Player player;
+    public GameObject player;
 }
