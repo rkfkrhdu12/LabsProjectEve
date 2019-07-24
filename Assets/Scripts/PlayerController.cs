@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 7;
     [SerializeField] float rotateSpeed = 60;
 
+    bool isDash = false;
+
     public float z;
 
     private void Start()
@@ -16,15 +18,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        isDash = false;
         z = 0;
 
-        if(Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             z += 1;
         }
         if (Input.GetKey(KeyCode.S))
         {
             z -= 1;
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isDash = true;
         }
 
         if (Input.GetKey(KeyCode.D))
@@ -37,8 +44,10 @@ public class PlayerController : MonoBehaviour
             z += .3f;
             transform.Rotate(0, -rotateSpeed * Time.deltaTime, 0);
         }
-        Mathf.Clamp(z, -1f, 1f);
+        z = Mathf.Clamp(z, -1f, 1f);
 
-        transform.Translate(0, 0, z * moveSpeed * Time.deltaTime);
+        z = ((z * moveSpeed) * (isDash == true ? 1.5f : 1.0f)) * Time.deltaTime;
+
+        transform.Translate(0, 0, z);
     }
 }

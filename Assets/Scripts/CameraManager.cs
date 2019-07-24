@@ -26,7 +26,7 @@ public class CameraManager : MonoBehaviour
     {
         if (!isCol)
         {
-            transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed*2 * Time.deltaTime);
         }
     }
 
