@@ -11,12 +11,10 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        MoveInput();
         Move();
 
         Attack();
     }
-
 
     // Move
     #region Move
@@ -83,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        MoveInput();
+
         x = x * rotateSpeed * Time.deltaTime;
         z = z * moveSpeed * Time.deltaTime;
 
