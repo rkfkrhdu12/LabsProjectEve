@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private void Start()
+    {
+        MoveInit();
+    }
+
+    void FixedUpdate()
+    {
+        MoveInput();
+        Move();
+
+        Attack();
+    }
+
+
     // Move
     #region Move
     public float moveSpeed = 7;
@@ -12,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public float z;
     const float maxZ = 1;
     float x;
-    const float maxX =1;
+    const float maxX = 1;
 
     bool isRun = false;
 
@@ -28,9 +42,9 @@ public class PlayerController : MonoBehaviour
         ePlayerAni ani = ePlayerAni.IDLE;
         z = 0;
         x = 0;
-        
+
         // 공격시 이동불가
-        if(isAttack) { return; }
+        if (isAttack) { return; }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -87,7 +101,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isAttack)
         {
-            if(pAni.curAni == ePlayerAni.IDLE)
+            if (pAni.curAni == ePlayerAni.IDLE)
             {
                 isAttack = false;
             }
@@ -114,17 +128,4 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimation pAni;
 
     #endregion
-
-    private void Start()
-    {
-        MoveInit();
-    }
-
-    void Update()
-    {
-        MoveInput();
-        Move();
-
-        Attack();
-    }
 }

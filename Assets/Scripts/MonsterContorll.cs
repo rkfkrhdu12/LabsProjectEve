@@ -54,70 +54,64 @@ public class MonsterContorll : MonoBehaviour
 
     private bool isDead = false;
 
+    
+
     void Start()
     {
         _transform = gameObject.GetComponent<Transform>();
-        playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
+        playerTransform = GameManager.Instance.player.GetComponent<Transform>();
         nvAgent = gameObject.GetComponent<NavMeshAgent>();
         _animator = gameObject.GetComponent<Animator>();
 
         //nvAgent.SetDestination(playerTransform.position);
-
         StartCoroutine(CheckState());
         StartCoroutine(CheckStateForAction());
-
-        IEnumerator CheckState()
-        {
-            while (!isDead)
-            {
-                yield return new WaitForSeconds(0.2f);
-                float dist = Vector3.Distance(playerTransform.position, _transform.position);
-
-                if (dist <= attackDist)
-                {
-                    curState = CurrentState.attack;
-                }
-                else if (dist <= traceDist)
-                {
-                    curState = CurrentState.trace;
-                }
-                else
-                {
-                    curState = CurrentState.idle;
-                }
-            }
-        }
-
-        IEnumerator CheckStateForAction()
-        {
-            while (!isDead)
-            {
-                switch (curState)
-                {
-                    case CurrentState.idle:
-                        nvAgent.isStopped = true;
-                        _animator.SetBool("isTrace", false);
-                        break;
-                    case CurrentState.trace:
-                        nvAgent.destination = playerTransform.position;
-                        nvAgent.isStopped = false;
-                        _animator.SetBool("isTrace", true);
-                        break;
-                    case CurrentState.attack:
-                        break;
-                }
-                yield return null;
-            }
-        }
-
-
     }
 
-    void Update()
+    IEnumerator CheckState()
     {
+        while (!isDead)
+        {
+            yield return new WaitForSeconds(0.01f);
+            float dist = Vector3.Distance(playerTransform.position, _transform.position);
 
+            if (dist <= attackDist)
+            {
+                curState = CurrentState.attack;
+            }
+            else if (dist <= traceDist)
+            {
+                curState = CurrentState.trace;
+            }
+            else
+            {
+                curState = CurrentState.idle;
+            }
+        }
     }
 
+    IEnumerator CheckStateForAction()
+    {
+        while (!isDead)
+        {
+            switch (curState)
+            {
+                case CurrentState.idle:
+                    nvAgent.isStopped = true;
+                    _animator.SetBool("isTrace", false);
+                    break;
+                case CurrentState.trace:
+                    nvAgent.destination = playerTransform.position;
+                    nvAgent.isStopped = false;
+                    _animator.SetBool("isTrace", true);
+                    break;
+                case CurrentState.attack:
+                    transform.LookAt(playerTransform);
+                    break;
+            }
+            yield return null;
+        }
+    }
 }
 
 
