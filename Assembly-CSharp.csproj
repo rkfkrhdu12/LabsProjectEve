@@ -180,6 +180,9 @@
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\HealthUI.cs" />
+    <Compile Include="Assets\Scripts\Inventory.cs" />
+    <Compile Include="Assets\Scripts\InventoryUI.cs" />
+    <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\MonsterContorll.cs" />
     <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
     <Compile Include="Assets\Scripts\PlayerAnimation.cs" />

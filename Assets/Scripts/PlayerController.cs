@@ -6,36 +6,24 @@ public class PlayerController : MonoBehaviour
 {
     private void Start()
     {
-        MoveInit();
+        InitMove();
+        InitInventory();
+        InitAttack();
     }
 
     void FixedUpdate()
     {
-        Move();
+        UpdateInputKey();
 
-        Attack();
+        UpdateMove();
+
+        UpdateAttack();
     }
 
-    // Move
-    #region Move
-    public float moveSpeed = 7;
-    [SerializeField] float rotateSpeed = 60;
+    // Input
+    #region Input
 
-    public float z;
-    const float maxZ = 1;
-    float x;
-    const float maxX = 1;
-
-    bool isRun = false;
-
-    void MoveInit()
-    {
-        z = 0;
-        x = 0;
-        isRun = false;
-    }
-
-    void MoveInput()
+    void UpdateInputKey()
     {
         ePlayerAni ani = ePlayerAni.IDLE;
         z = 0;
@@ -44,31 +32,39 @@ public class PlayerController : MonoBehaviour
         // 공격시 이동불가
         if (isAttack) { return; }
 
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            isInventory = true;
+        }
+
+        // 인벤토리 오픈시 이동불가
+        if(isInventory) { return; }
+
         if (Input.GetKey(KeyCode.W))
         {
-            z += maxZ;
+            z += 1;
             ani = (ePlayerAni.WALK);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            z -= maxZ;
+            z -= 1;
             ani = (ePlayerAni.WALK);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            z += maxZ * .3f;
-            x += maxX;
+            z += 1 * .3f;
+            x += 1;
             ani = (ePlayerAni.WALK);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            z += maxZ * .3f;
-            x -= maxX;
+            z += 1 * .3f;
+            x -= 1;
             ani = (ePlayerAni.WALK);
         }
-        z = Mathf.Clamp(z, -maxZ, maxZ);
-        x = Mathf.Clamp(x, -maxX, maxX);
+        z = Mathf.Clamp(z, -1, 1);
+        x = Mathf.Clamp(x, -1, 1);
 
         if (Input.GetKey(KeyCode.LeftShift) && z != 0)
         {
@@ -78,11 +74,24 @@ public class PlayerController : MonoBehaviour
 
         pAni.ChangeAni(ani);
     }
+    #endregion
 
-    void Move()
+    // Move
+    #region Move
+    [SerializeField] float moveSpeed = 7;
+    [SerializeField] float rotateSpeed = 60;
+
+    public float z;
+    float x;
+
+    void InitMove()
     {
-        MoveInput();
+        z = 0;
+        x = 0;
+    }
 
+    void UpdateMove()
+    {
         x = x * rotateSpeed * Time.deltaTime;
         z = z * moveSpeed * Time.deltaTime;
 
@@ -94,10 +103,15 @@ public class PlayerController : MonoBehaviour
     // Attack
     #region Attack
     public bool isAttack = false;
+    public float health = 100;
 
-    float attackTime = 0.0f;
-    float attackInterval = 1.0f;
-    void Attack()
+    void InitAttack()
+    {
+        isAttack = false;
+        health = 100;
+    }
+
+    void UpdateAttack()
     {
         if (isAttack)
         {
@@ -108,6 +122,9 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // 인벤토리 오픈시 이동불가
+            if (isInventory) { return; }
+
             if (Input.GetMouseButtonDown(0))
             {
                 isAttack = true;
@@ -122,13 +139,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public float health = 100;
-
     public void GetDamage(float damage)
     {
         health -= damage;
     }
     #endregion
+
+    // Inventory
+    bool isInventory = false;
+
+    void InitInventory()
+    {
+        isInventory = false;
+    }
 
     // Weapon
 
