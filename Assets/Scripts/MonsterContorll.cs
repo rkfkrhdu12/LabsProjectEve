@@ -44,28 +44,27 @@ public class MonsterContorll : MonoBehaviour
     public enum CurrentState { idle, trace, attack, dead };
     public CurrentState curState = CurrentState.idle;
 
-    private Transform _transform;
     private Transform playerTransform;
     private NavMeshAgent nvAgent;
     private Animator _animator;
 
     public float traceDist = 3.0f;
-    public float attackDist = 1.0f;
+    float attackDist = 1.0f;
 
     private bool isDead = false;
 
-    
-
     void Start()
     {
-        _transform = gameObject.GetComponent<Transform>();
-        playerTransform = GameManager.Instance.player.GetComponent<Transform>();
-        nvAgent = gameObject.GetComponent<NavMeshAgent>();
-        _animator = gameObject.GetComponent<Animator>();
+        playerTransform = GameManager.Instance.player.transform;
+        nvAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+
+        attackDist = nvAgent.stoppingDistance;
 
         //nvAgent.SetDestination(playerTransform.position);
         StartCoroutine(CheckState());
         StartCoroutine(CheckStateForAction());
+        curAni = key_IsIdle;
     }
 
     IEnumerator CheckState()
@@ -73,7 +72,7 @@ public class MonsterContorll : MonoBehaviour
         while (!isDead)
         {
             yield return new WaitForSeconds(0.01f);
-            float dist = Vector3.Distance(playerTransform.position, _transform.position);
+            float dist = Vector3.Distance(playerTransform.position, transform.position);
 
             if (dist <= attackDist)
             {
@@ -97,23 +96,51 @@ public class MonsterContorll : MonoBehaviour
             switch (curState)
             {
                 case CurrentState.idle:
+                    ChangeAnimation(key_IsIdle);
                     nvAgent.isStopped = true;
-                    _animator.SetBool("isTrace", false);
                     break;
                 case CurrentState.trace:
                     nvAgent.destination = playerTransform.position;
                     nvAgent.isStopped = false;
-                    _animator.SetBool("isTrace", true);
+                    ChangeAnimation(key_IsTrace);
                     break;
                 case CurrentState.attack:
                     transform.LookAt(playerTransform);
+                    ChangeAnimation(key_IsAttack);
                     break;
             }
             yield return null;
         }
     }
+
+    string key_IsIdle = "isIdle";
+    string key_IsTrace = "isTrace";
+    string key_IsAttack = "isAttack";
+
+    string curAni = "isTrace";
+    void ChangeAnimation(string changeAni)
+    {
+        _animator.SetBool(curAni, false);
+        if (changeAni != "isIdle")
+        {
+            curAni = changeAni;
+            _animator.SetBool(curAni, true);
+        }
+    }
+
+    public MonsterWeapon[] hand;
+
+    float health = 100;
+    public void GetDamage(float damage)
+    {
+        Debug.Log(1);
+        health -= damage;
+    }
+
+    public void LeftHandAttackStart() { hand[0].ON(); }
+    public void LeftHandAttackEnd() { hand[0].OFF(); }
+
+    public void RightHandAttackStart() { hand[1].ON(); }
+    public void RightHandAttackEnd() { hand[1].OFF(); }
+
 }
-
-
-
-

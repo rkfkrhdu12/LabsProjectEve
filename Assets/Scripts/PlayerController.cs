@@ -121,7 +121,16 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public float health = 100;
+
+    public void GetDamage(float damage)
+    {
+        health -= damage;
+    }
     #endregion
+
+    // Weapon
 
     // Animation
     #region Animation

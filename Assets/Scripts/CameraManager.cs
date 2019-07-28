@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     Transform player;
-    Camera mainCamera;
     
     [SerializeField] float moveSpeed = 7;
 
@@ -13,20 +12,16 @@ public class CameraManager : MonoBehaviour
     {
         player = GameManager.Instance.player.transform;
 
-        mainCamera = Camera.main;
         isCol = false;
-
-        prevPlayerPos = Vector3.zero;
     }
 
     bool isCol = false;
-    Vector3 prevPlayerPos;
 
-    void Update()
+    void FixedUpdate()
     {
         if (!isCol)
         {
-            transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed*2 * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed * 2 * Time.deltaTime);
         }
     }
 

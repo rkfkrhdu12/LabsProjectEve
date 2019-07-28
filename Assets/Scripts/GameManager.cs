@@ -28,4 +28,8 @@ public class GameManager : MonoBehaviour
     }
 
     public GameObject player;
+
+    public string monsterTag = "Monster";
+    public string playerTag = "Player";
+
 }

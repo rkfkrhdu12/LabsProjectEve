@@ -179,9 +179,12 @@
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HealthUI.cs" />
     <Compile Include="Assets\Scripts\MonsterContorll.cs" />
+    <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
     <Compile Include="Assets\Scripts\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Weapon.cs" />
     <None Include="Assets\AnyAssets\Standard Assets\Prototyping\Shaders\WorldCoordDiffuse.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />

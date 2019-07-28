@@ -30,7 +30,6 @@ public class PlayerAnimation : MonoBehaviour
     public ePlayerAni curAni;
 
     public string curAniKey;
-    [SerializeField] bool isDead = false;
 
     void Start()
     {
