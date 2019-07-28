@@ -95,12 +95,12 @@ public class MonsterContorll : MonoBehaviour
                 switch (curState)
                 {
                     case CurrentState.idle:
-                        nvAgent.Stop();
+                        nvAgent.isStopped = true;
                         _animator.SetBool("isTrace", false);
                         break;
                     case CurrentState.trace:
                         nvAgent.destination = playerTransform.position;
-                        nvAgent.Resume();
+                        nvAgent.isStopped = false;
                         _animator.SetBool("isTrace", true);
                         break;
                     case CurrentState.attack:

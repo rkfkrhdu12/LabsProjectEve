@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ePlayerAni
+{
+    IDLE,
+    WALK,
+    RUN,
+    JUMP,
+    DAMAGE,
+    DEAD,
+    ATTACK01,
+    ATTACK02,
+}
+
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] Animator animator;
@@ -13,85 +25,68 @@ public class PlayerAnimation : MonoBehaviour
     private const string key_isJump = "IsJump";
     private const string key_isDamage = "IsDamage";
     private const string key_isDead = "IsDead";
-    private const string key_isReset = "IsReset";
+    private const string key_isIdle = "IsIdle";
 
+    public ePlayerAni curAni;
+
+    public string curAniKey;
     [SerializeField] bool isDead = false;
 
     void Start()
     {
+        curAni = ePlayerAni.IDLE;
+        curAniKey = key_isIdle;
+
         animator = GetComponent<Animator>();
+
+        StopAni();
     }
 
     void Update()
     {
-        if (isDead)
-        {
-            animator.SetBool(key_isDead, true);
-
-            return;
-        }
-
-        if (Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.S)) || (Input.GetKey(KeyCode.A)) || (Input.GetKey(KeyCode.D)))
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                animator.SetBool(key_isRun, true);
-                animator.SetBool(key_isWalk, false);
-            }
-            else
-            {
-                animator.SetBool(key_isWalk, true);
-                animator.SetBool(key_isRun, false);
-            }
-        }
-        else
-        {
-            animator.SetBool(key_isWalk, false);
-            animator.SetBool(key_isRun, false);
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            animator.SetBool(key_isAttack01, true);
-        }
-        else
-        {
-            animator.SetBool(key_isAttack01, false);
-        }
-		
-        if (Input.GetMouseButtonUp(1))
-        {
-            animator.SetBool(key_isAttack02, true);
-        }
-        else
-        {
-            animator.SetBool(key_isAttack02, false);
-        }
-       
-        if (Input.GetKeyUp("space"))
-        {
-            animator.SetBool(key_isJump, true);
-        }
-        else
-        {
-            animator.SetBool(key_isJump, false);
-        }
+        animator.SetBool(curAniKey, true);
     }
 
-    public void Reset()
+    string prevAniKey = key_isIdle;
+    public void StopAni()
     {
-        isDead = false;
-
-        animator.SetBool(key_isDead, false);
-        animator.SetBool(key_isJump, false);
-        animator.SetBool(key_isAttack02, false);
-        animator.SetBool(key_isAttack01, false);
-        animator.SetBool(key_isRun, false);
-        animator.SetTrigger(key_isReset);
+        ChangeAni(ePlayerAni.IDLE);
     }
 
-    public void Hit()
+    public void ChangeAni(ePlayerAni changeAni)
     {
-        animator.SetTrigger(key_isDamage);
+        if (changeAni != curAni)
+        {
+            animator.SetBool(curAniKey, false);
+            curAni = changeAni;
+
+            switch (curAni)
+            {
+                case ePlayerAni.IDLE:
+                    curAniKey = key_isIdle;
+                    break;
+                case ePlayerAni.WALK:
+                    curAniKey = key_isWalk;
+                    break;
+                case ePlayerAni.RUN:
+                    curAniKey = key_isRun;
+                    break;
+                case ePlayerAni.JUMP:
+                    curAniKey = key_isJump;
+                    break;
+                case ePlayerAni.DAMAGE:
+                    curAniKey = key_isDamage;
+                    break;
+                case ePlayerAni.DEAD:
+                    curAniKey = key_isDead;
+                    break;
+                case ePlayerAni.ATTACK01:
+                    curAniKey = key_isAttack01;
+                    break;
+                case ePlayerAni.ATTACK02:
+                    curAniKey = key_isAttack02;
+                    break;
+            }
+        }
     }
 }
