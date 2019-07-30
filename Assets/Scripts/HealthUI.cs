@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-    PlayerController player;
+    protected Character character;
     public GameObject healthUIObj;
 
     Slider slider;
@@ -13,16 +13,21 @@ public class HealthUI : MonoBehaviour
 
     void Start()
     {
-        player = GetComponent<PlayerController>();
-
         slider = healthUIObj.transform.GetChild(1).GetComponent<Slider>();
         text = healthUIObj.transform.GetChild(2).GetComponent<Text>();
+
+        Init();
+    }
+
+    public virtual void Init()
+    {
+        character = GetComponent<MonsterContorll>();
     }
 
     float health;
     void Update()
     {
-        health = player.health;
+        health = character.health;
 
         slider.value = 100 - health;
         text.text = health + "/" + 100;

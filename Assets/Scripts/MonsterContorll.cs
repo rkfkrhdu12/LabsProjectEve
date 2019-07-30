@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterContorll : MonoBehaviour
+public class MonsterContorll : Character
 {
     //GameObject player;
 
@@ -40,7 +40,6 @@ public class MonsterContorll : MonoBehaviour
     //    }
     //}
 
-
     public enum CurrentState { idle, trace, attack, dead };
     public CurrentState curState = CurrentState.idle;
 
@@ -65,6 +64,8 @@ public class MonsterContorll : MonoBehaviour
         StartCoroutine(CheckState());
         StartCoroutine(CheckStateForAction());
         curAni = key_IsIdle;
+
+        health = 100;
     }
 
     IEnumerator CheckState()
@@ -129,14 +130,7 @@ public class MonsterContorll : MonoBehaviour
     }
 
     public MonsterWeapon[] hand;
-
-    float health = 100;
-    public void GetDamage(float damage)
-    {
-        Debug.Log(1);
-        health -= damage;
-    }
-
+    
     public void LeftHandAttackStart() { hand[0].ON(); }
     public void LeftHandAttackEnd() { hand[0].OFF(); }
 
