@@ -15,18 +15,21 @@ public class StateSkill : State
 
     public override void ReadyState()
     {
+        if (skillMgr.skill[(int)pCtrl.skillCode].IsCool()) { End(); return; }
+
         skillMgr.skill[(int)pCtrl.skillCode].ReadySkill();
     }
 
     public override void UpdateState()
     {
-        if (skillMgr.skill[(int)pCtrl.skillCode].IsCool()) { End(); return; }
 
         skillMgr.skill[(int)pCtrl.skillCode].UpdateSkill();
     }
 
     void End()
     {
+        skillMgr.skill[(int)pCtrl.skillCode].End();
+
         pCtrl.ChangeState(ePlayerState.MOVE);
     }
 }

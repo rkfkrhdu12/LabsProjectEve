@@ -14,6 +14,19 @@ public enum ePlayerState
 
 public class PlayerController : Character
 {
+    public PlayerAnimation pAni;
+    public UI ui;
+
+    public float moveSpeed = 10;
+    public float rotateSpeed = 60;
+
+    public float z;
+    public float x;
+
+    public eSkill skillCode;
+
+    public GameObject mesh;
+
     private void Awake()
     {
         Init();
@@ -38,18 +51,19 @@ public class PlayerController : Character
 
     void UpdateInputAttack()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (curState != ePlayerState.SKILL)
         {
-            skillCode = eSkill.DEFAULT_ATTACK;
-            curState = ePlayerState.SKILL;
-            stateMgr.state[(int)curState].ReadyState();
-        }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                skillCode = eSkill.DEFAULT_ATTACK;
+                curState = ePlayerState.SKILL;
+            }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            skillCode = eSkill.TELEPORT;
-            curState = ePlayerState.SKILL;
-            stateMgr.state[(int)curState].ReadyState();
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                skillCode = eSkill.TELEPORT;
+                curState = ePlayerState.SKILL;
+            }
         }
     }
 
@@ -59,7 +73,16 @@ public class PlayerController : Character
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-
+                if (ui.isInventory)
+                {
+                    curState = ePlayerState.NONE;
+                    ui.OffInventory();
+                }
+                else
+                {
+                    curState = ePlayerState.UI;
+                    ui.OnInventory();
+                }
             }
         }
     }
@@ -96,7 +119,6 @@ public class PlayerController : Character
             if (z != 0)
             {
                 curState = ePlayerState.MOVE;
-                stateMgr.state[(int)curState].ReadyState();
 
                 pAni.ChangeAni(ePlayerAni.RUN);
             }
@@ -111,12 +133,27 @@ public class PlayerController : Character
 
     // State
     #region State
-    ePlayerState curState;
+    ePlayerState s;
+    public ePlayerState curState
+    {
+        get
+        {
+            return s;
+        }
+        set
+        {
+            if (s != value)
+            {
+                s = value;
+                if (s != ePlayerState.NONE)
+                    stateMgr.state[(int)s].ReadyState();
+            }
+        }
+    }
     StateManager stateMgr;
 
     void InitState()
     {
-        curState = ePlayerState.MOVE;
         stateMgr = GetComponent<StateManager>();
     }
 
@@ -131,27 +168,16 @@ public class PlayerController : Character
     }
     #endregion
 
-    // Move
-    public float moveSpeed = 10;
-    public float rotateSpeed = 60;
-
-    public float z;
-    public float x;
-
-    // Skill
-    public eSkill skillCode;
-
-    // Animation
-    #region Animation
-    public PlayerAnimation pAni;
-
-    #endregion
-
-    public GameObject mesh;
+    void Start()
+    {
+        curState = ePlayerState.MOVE;
+    }
 
     void Init()
     {
         mesh = transform.GetChild(0).gameObject;
+
+        ui = GetComponent<UI>();
         health = 100;
     }
 }

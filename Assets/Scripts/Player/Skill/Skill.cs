@@ -35,9 +35,10 @@ public class Skill
 
     public virtual void UpdateSkill()
     {
+        End();
     }
 
-    protected void End()
+    public virtual void End()
     {
         pCtrl.ChangeState(ePlayerState.MOVE);
     }

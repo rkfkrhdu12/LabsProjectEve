@@ -6,7 +6,6 @@ public class PlayerHealthUI : HealthUI
 {
     public override void Init()
     {
-        character = GetComponent<PlayerController>();
+        character = GameManager.Instance.player.GetComponent<PlayerController>();
     }
-
 }

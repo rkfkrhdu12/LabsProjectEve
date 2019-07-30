@@ -8,8 +8,6 @@ public class SkillTelePort : Skill
     {
         base.Init();
 
-        isCool = false;
-
         coolInterval = 2.0f;
     }
 

@@ -6,7 +6,7 @@ public class StateManager : MonoBehaviour
 {
     public State[] state = new State[(int)ePlayerState.LAST];
 
-    void Start()
+    void Awake()
     {
         state = new State[(int)ePlayerState.LAST];
         state[(int)ePlayerState.NONE] = new State();
@@ -19,4 +19,13 @@ public class StateManager : MonoBehaviour
             state[i].Init();
         }
     }
+
+    public void Start()
+    {
+        for (int i = (int)ePlayerState.MOVE; i < (int)ePlayerState.LAST; ++i)
+        {
+            state[i].Init();
+        }
+    }
+
 }

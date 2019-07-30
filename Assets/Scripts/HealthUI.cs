@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthUI : MonoBehaviour
+public class HealthUI
 {
-    protected Character character;
-    public GameObject healthUIObj;
+    public Character character;
+    GameObject healthUIObj;
 
     Slider slider;
     Text text;
 
-    void Start()
+    public void Start(GameObject obj)
     {
+        healthUIObj = obj;
+
         slider = healthUIObj.transform.GetChild(1).GetComponent<Slider>();
         text = healthUIObj.transform.GetChild(2).GetComponent<Text>();
 
@@ -21,11 +23,11 @@ public class HealthUI : MonoBehaviour
 
     public virtual void Init()
     {
-        character = GetComponent<MonsterContorll>();
+        
     }
 
     float health;
-    void Update()
+    public void Update()
     {
         health = character.health;
 

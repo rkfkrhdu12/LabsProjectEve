@@ -183,6 +183,7 @@
     <Compile Include="Assets\Scripts\HealthUI.cs" />
     <Compile Include="Assets\Scripts\MonsterContorll.cs" />
     <Compile Include="Assets\Scripts\MonsterWeapon.cs" />
+    <Compile Include="Assets\Scripts\Player\InventoryUI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerHealthUI.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Assets\Scripts\Player\State\StateMove.cs" />
     <Compile Include="Assets\Scripts\Player\State\StateSkill.cs" />
     <Compile Include="Assets\Scripts\Player\State\StateUI.cs" />
+    <Compile Include="Assets\Scripts\Player\UI.cs" />
     <None Include="Assets\AnyAssets\Standard Assets\Prototyping\Shaders\WorldCoordDiffuse.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />

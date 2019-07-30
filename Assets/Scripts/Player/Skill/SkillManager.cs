@@ -6,7 +6,7 @@ public class SkillManager : MonoBehaviour
 {
     public Skill[] skill = new Skill[(int)eSkill.LAST];
 
-    public void Start()
+    public void Awake()
     {
         skill = new Skill[(int)eSkill.LAST];
 
@@ -14,6 +14,10 @@ public class SkillManager : MonoBehaviour
         skill[(int)eSkill.DEFAULT_ATTACK] = new SkillDefaultAttack();
         skill[(int)eSkill.TELEPORT] = new SkillTelePort();
 
+    }
+
+    public void Start()
+    {
         for (int i = (int)eSkill.DEFAULT_ATTACK; i < (int)eSkill.LAST; ++i)
         {
             skill[i].Init();
