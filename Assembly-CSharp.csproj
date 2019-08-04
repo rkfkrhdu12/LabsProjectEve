@@ -198,6 +198,7 @@
     <Compile Include="Assets\Scripts\Player\State\StateSkill.cs" />
     <Compile Include="Assets\Scripts\Player\State\StateUI.cs" />
     <Compile Include="Assets\Scripts\Player\UI.cs" />
+    <Compile Include="Assets\TestItemModel\Gems Ultimate Pack\Scripts\AnimationScript.cs" />
     <None Include="Assets\AnyAssets\Standard Assets\Prototyping\Shaders\WorldCoordDiffuse.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
@@ -206,6 +207,7 @@
     <None Include="Assets\AnyAssets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\AnyAssets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
     <None Include="Assets\AnyAssets\Particle\Particle Attractor by Moonflower Carnivore\Shaders\Particles Additive Intensify.shader" />
+    <None Include="Assets\TestItemModel\Gems Ultimate Pack\READ ME.txt" />
     <None Include="Assets\AnyAssets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <None Include="Assets\AnyAssets\Particle\Particle Ribbon by Moonflower Carnivore\Shaders\Particle Alpha Blend HDR.shader" />

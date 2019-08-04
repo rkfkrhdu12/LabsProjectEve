@@ -34,9 +34,13 @@ public class PlayerController : Character
         InitState();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         UpdateInputKey();
+    }
+
+    void FixedUpdate()
+    {
         UpdateState();
     }
 
@@ -133,7 +137,7 @@ public class PlayerController : Character
 
     // State
     #region State
-    ePlayerState s;
+    public ePlayerState s;
     public ePlayerState curState
     {
         get

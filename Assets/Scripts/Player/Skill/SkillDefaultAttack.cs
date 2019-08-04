@@ -17,6 +17,7 @@ public class SkillDefaultAttack : Skill
         isCool = true;
     }
 
+    private const string key_isAttack01 = "IsAttack01";
     public override void UpdateSkill()
     {
         if (pAni.curAni == ePlayerAni.IDLE)

@@ -14,7 +14,7 @@ public class Skill
 {
     protected PlayerController pCtrl;
     protected PlayerAnimation pAni;
-
+    protected Animator pAnimator;
     protected bool isCool;
     protected float coolTime = 0.0f;
     protected float coolInterval = 1.0f;
@@ -23,6 +23,7 @@ public class Skill
     {
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
         pAni = pCtrl.mesh.GetComponent<PlayerAnimation>();
+        pAnimator = pAni.GetComponent<Animator>();
 
         coolTime = 0.0f;
         coolInterval = 0.0f;
