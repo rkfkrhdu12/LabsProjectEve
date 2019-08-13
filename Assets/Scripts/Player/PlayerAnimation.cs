@@ -35,10 +35,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         curAni = ePlayerAni.IDLE;
         curAniKey = key_isIdle;
+        isAttack = false;
 
         animator = GetComponent<Animator>();
 
-        StopAni();
+        StopAttack();
     }
 
     void Update()
@@ -46,13 +47,17 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool(curAniKey, true);
     }
 
-    public void StopAni()
+    bool isAttack = false;
+    public void StopAttack()
     {
+        isAttack = false;
         ChangeAni(ePlayerAni.IDLE);
     }
 
     public void ChangeAni(ePlayerAni changeAni)
     {
+        if (isAttack) return;
+
         if (changeAni != curAni)
         {
             animator.SetBool(curAniKey, false);
@@ -80,9 +85,11 @@ public class PlayerAnimation : MonoBehaviour
                     break;
                 case ePlayerAni.ATTACK01:
                     curAniKey = key_isAttack01;
+                    isAttack = true;
                     break;
                 case ePlayerAni.ATTACK02:
                     curAniKey = key_isAttack02;
+                    isAttack = true;
                     break;
             }
         }
