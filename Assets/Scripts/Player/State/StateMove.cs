@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StateMove : State
 {
-
     float z;
     float x;
 

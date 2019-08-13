@@ -10,7 +10,7 @@ public class MonsterWeapon : MonoBehaviour
     {
         if(other.gameObject.CompareTag(GameManager.Instance.playerTag))
         {
-            other.GetComponent<PlayerController>().GetDamage(damage);
+            other.GetComponent<PlayerCharacter>().GetDamage(damage);
         }
     }
 

@@ -29,7 +29,7 @@ public class HealthUI
     float health;
     public void Update()
     {
-        health = character.health;
+        health = character.healthPoint;
 
         slider.value = 100 - health;
         text.text = health + "/" + 100;

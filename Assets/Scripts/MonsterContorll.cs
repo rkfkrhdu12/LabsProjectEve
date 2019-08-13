@@ -65,7 +65,7 @@ public class MonsterContorll : Character
         StartCoroutine(CheckStateForAction());
         curAni = key_IsIdle;
 
-        health = 100;
+        healthPoint = 100;
     }
 
     IEnumerator CheckState()
@@ -129,6 +129,7 @@ public class MonsterContorll : Character
         }
     }
 
+    /// 
     public MonsterWeapon[] hand;
     
     public void LeftHandAttackStart() { hand[0].ON(); }
@@ -136,5 +137,11 @@ public class MonsterContorll : Character
 
     public void RightHandAttackStart() { hand[1].ON(); }
     public void RightHandAttackEnd() { hand[1].OFF(); }
+
+    float str = 20;
+    public float Str()
+    {
+        return str;
+    }
 
 }

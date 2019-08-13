@@ -10,13 +10,17 @@ public class GameManager : MonoBehaviour
     {
         get
         {
+            if (_intance == null)
+            {
+                _intance = GameObject.Find("GameManager").GetComponent<GameManager>();
+            }
             return _intance;
         }
         set
         {
             if(_intance == null)
             {
-                _intance = new GameManager();
+                _intance = GameObject.Find("GameManager").GetComponent<GameManager>();
             }
         }
     }
@@ -24,7 +28,10 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        _intance = this;
+        if (_intance == null)
+        {
+            _intance = this;
+        }
     }
 
     public GameObject player;

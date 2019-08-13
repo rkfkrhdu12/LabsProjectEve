@@ -539,3 +539,5 @@ C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp.csproj.
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp.dll
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp.pdb
+C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\Temp\bin\Debug\Unity.2D.Sprite.Editor.dll
+C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\Temp\bin\Debug\Unity.2D.Sprite.Editor.pdb

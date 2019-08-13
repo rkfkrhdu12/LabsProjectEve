@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InventoryUI
 {
     public GameObject inventoryUIObj;
-    PlayerController pCtrl;
+    PlayerCharacter pChar;
 
     Slider slider;
     
@@ -14,13 +14,13 @@ public class InventoryUI
     public void Start(GameObject obj)
     {
         inventoryUIObj = obj;
-        pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
+        pChar = GameManager.Instance.player.GetComponent<PlayerCharacter>();
         slider = inventoryUIObj.transform.GetChild(0).GetComponent<Slider>();
     }
 
     void LoadHealth()
     {
-        slider.value = 100 - pCtrl.health;
+        slider.value = 100 - pChar.healthPoint;
     }
 
     public void Load()

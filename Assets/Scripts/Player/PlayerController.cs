@@ -12,13 +12,13 @@ public enum ePlayerState
     LAST,
 }
 
-public class PlayerController : Character
+public class PlayerController : MonoBehaviour
 {
     public PlayerAnimation pAni;
     public UI ui;
 
-    public float moveSpeed = 10;
-    public float rotateSpeed = 60;
+    public float moveSpeed = 7;
+    public float rotateSpeed = 80;
 
     public float z;
     public float x;
@@ -26,6 +26,7 @@ public class PlayerController : Character
     public eSkill skillCode;
 
     public GameObject mesh;
+
 
     private void Awake()
     {
@@ -43,6 +44,14 @@ public class PlayerController : Character
     {
         UpdateState();
     }
+
+    void Init()
+    {
+        mesh = gameObject;
+
+        ui = GetComponent<UI>();
+    }
+
 
     // Input
     #region Input
@@ -67,6 +76,34 @@ public class PlayerController : Character
             {
                 skillCode = eSkill.TELEPORT;
                 curState = ePlayerState.SKILL;
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                return;
+                //skillMgr.A();
+                //curState = ePlayerState.SKILL;
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                return;
+                //skillMgr.S();
+                //curState = ePlayerState.SKILL;
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                return;
+                //skillMgr.D();
+                //curState = ePlayerState.SKILL;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                return;
+                //skillMgr.F();
+                //curState = ePlayerState.SKILL;
             }
         }
     }
@@ -109,12 +146,12 @@ public class PlayerController : Character
 
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                z += 1 * .3f;
+                z += .5f;
                 x += 1;
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                z += 1 * .3f;
+                z += .5f;
                 x -= 1;
             }
             z = Mathf.Clamp(z, -1, 1);
@@ -159,6 +196,7 @@ public class PlayerController : Character
     void InitState()
     {
         stateMgr = GetComponent<StateManager>();
+        curState = ePlayerState.MOVE;
     }
 
     void UpdateState()
@@ -172,16 +210,4 @@ public class PlayerController : Character
     }
     #endregion
 
-    void Start()
-    {
-        curState = ePlayerState.MOVE;
-    }
-
-    void Init()
-    {
-        mesh = transform.GetChild(0).gameObject;
-
-        ui = GetComponent<UI>();
-        health = 100;
-    }
 }

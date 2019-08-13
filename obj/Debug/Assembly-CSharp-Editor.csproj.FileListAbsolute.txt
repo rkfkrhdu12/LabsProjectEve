@@ -284,3 +284,5 @@ C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\Temp\bin\Debug\nunit.framework.xm
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp-Editor.csproj.CopyComplete
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp-Editor.dll
 C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\obj\Debug\Assembly-CSharp-Editor.pdb
+C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\Temp\bin\Debug\Unity.2D.Sprite.Editor.dll
+C:\Users\rkfkr\Documents\GitHub\LabsProjectEve\Temp\bin\Debug\Unity.2D.Sprite.Editor.pdb
