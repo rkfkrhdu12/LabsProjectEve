@@ -9,6 +9,13 @@ public class PlayerCharacter : Character
     float reviveHealth = .1f;
     float reviveEnergy = 0;
 
+    public float energyPoint = 100;
+    protected float maxEnergy = 100;
+    protected float energyRegen = 4;
+
+    protected float regenTime = 0.0f;
+    protected float regenInterval = 1.0f;
+
     public PlayerController pCtrl;
 
     private void Awake()
@@ -47,7 +54,6 @@ public class PlayerCharacter : Character
         }
         healthPoint = Mathf.Clamp(healthPoint, 0, maxHealth);
         energyPoint = Mathf.Clamp(energyPoint, 0, maxEnergy);
-
     }
 
     public override void GetDamage(float damage)

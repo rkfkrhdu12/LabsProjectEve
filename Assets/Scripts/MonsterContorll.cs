@@ -114,15 +114,15 @@ public class MonsterContorll : Character
         }
     }
 
-    string key_IsIdle = "isIdle";
-    string key_IsTrace = "isTrace";
-    string key_IsAttack = "isAttack";
+    string key_IsIdle = "IsIdle";
+    string key_IsTrace = "IsTrace";
+    string key_IsAttack = "IsAttack";
 
-    string curAni = "isTrace";
+    string curAni = "IsTrace";
     void ChangeAnimation(string changeAni)
     {
         _animator.SetBool(curAni, false);
-        if (changeAni != "isIdle")
+        if (changeAni != key_IsIdle)
         {
             curAni = changeAni;
             _animator.SetBool(curAni, true);
