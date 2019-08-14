@@ -13,9 +13,8 @@ public enum eDeadState
 public class Character : MonoBehaviour
 {
     public float healthPoint = 200;
-    protected float maxHealth = 200;
+    public float maxHealth = 200;
     protected float healthRegen = 4;
-
 
     protected float str = 100;
 

@@ -44,7 +44,7 @@ public class MonsterContorll : Character
     public CurrentState curState = CurrentState.idle;
 
     private Transform playerTransform;
-    private NavMeshAgent nvAgent;
+    public NavMeshAgent nvAgent;
     private Animator _animator;
 
     public float traceDist = 3.0f;
@@ -55,7 +55,8 @@ public class MonsterContorll : Character
     void Start()
     {
         playerTransform = GameManager.Instance.player.transform;
-        nvAgent = GetComponent<NavMeshAgent>();
+        if (nvAgent == null)
+            nvAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
 
         attackDist = nvAgent.stoppingDistance;
@@ -66,6 +67,8 @@ public class MonsterContorll : Character
         curAni = key_IsIdle;
 
         healthPoint = 100;
+        maxHealth = healthPoint;
+        str = 10;
     }
 
     IEnumerator CheckState()
@@ -73,6 +76,7 @@ public class MonsterContorll : Character
         while (!isDead)
         {
             yield return new WaitForSeconds(0.01f);
+
             float dist = Vector3.Distance(playerTransform.position, transform.position);
 
             if (dist <= attackDist)
@@ -137,11 +141,17 @@ public class MonsterContorll : Character
 
     public void RightHandAttackStart() { hand[1].ON(); }
     public void RightHandAttackEnd() { hand[1].OFF(); }
-
-    float str = 20;
+    
     public float Str()
     {
         return str;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag(GameManager.Instance.playerTag))
+        {
+            Debug.Log(1);
+        }
+    }
 }

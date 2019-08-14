@@ -15,7 +15,7 @@ public enum ePlayerState
 public class PlayerController : MonoBehaviour
 {
     public PlayerAnimation pAni;
-    public UI ui;
+    public UIManager ui;
 
     public float moveSpeed = 7;
     public float rotateSpeed = 80;
@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public eSkill skillCode;
 
     public GameObject mesh;
-
 
     private void Awake()
     {
@@ -49,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         mesh = gameObject;
 
-        ui = GetComponent<UI>();
+        ui = GetComponent<UIManager>();
     }
 
 
@@ -141,19 +140,22 @@ public class PlayerController : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                z -= 1;
+                z -= .5f;
             }
 
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                z += .5f;
                 x += 1;
+                if (z == 0) z += .3f;
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                z += .5f;
                 x -= 1;
+                if (z == 0) z += .3f;
             }
+
+            if (z < 0) { x *= -1; }
+
             z = Mathf.Clamp(z, -1, 1);
             x = Mathf.Clamp(x, -1, 1);
 

@@ -10,7 +10,7 @@ public class PlayerCharacter : Character
     float reviveEnergy = 0;
 
     public float energyPoint = 100;
-    protected float maxEnergy = 100;
+    public float maxEnergy = 100;
     protected float energyRegen = 4;
 
     protected float regenTime = 0.0f;
@@ -61,12 +61,12 @@ public class PlayerCharacter : Character
         base.GetDamage(damage);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
-        {
-            GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
+    //    {
+    //        GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
+    //    }
+    //}
 
 }
