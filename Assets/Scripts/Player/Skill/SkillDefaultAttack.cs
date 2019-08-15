@@ -2,13 +2,6 @@
 
 public class SkillDefaultAttack : Skill
 {
-    public override void Init()
-    {
-        base.Init();
-        isCool = false;
-        coolInterval = .7f;
-    }
-
     public override void ReadySkill()
     {
         base.ReadySkill();

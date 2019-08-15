@@ -60,13 +60,5 @@ public class PlayerCharacter : Character
     {
         base.GetDamage(damage);
     }
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
-    //    {
-    //        GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
-    //    }
-    //}
-
+    
 }

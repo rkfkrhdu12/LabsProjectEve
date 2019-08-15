@@ -15,7 +15,8 @@ public enum ePlayerState
 public class PlayerController : MonoBehaviour
 {
     public PlayerAnimation pAni;
-    public UIManager ui;
+    public UIManager uiMgr;
+    public SkillManager skillMgr;
 
     public float moveSpeed = 7;
     public float rotateSpeed = 80;
@@ -34,6 +35,14 @@ public class PlayerController : MonoBehaviour
         InitState();
     }
 
+    private void Start()
+    {
+        skillMgr.SetA(eSkill.FLAME);
+        skillMgr.SetS(eSkill.SWIFT);
+        skillMgr.SetD(eSkill.ELECTRON);
+        skillMgr.SetF(eSkill.FREEZING);
+    }
+
     void Update()
     {
         UpdateInputKey();
@@ -48,7 +57,9 @@ public class PlayerController : MonoBehaviour
     {
         mesh = gameObject;
 
-        ui = GetComponent<UIManager>();
+        uiMgr = GetComponent<UIManager>();
+        skillMgr = GetComponent<SkillManager>();
+
     }
 
 
@@ -73,36 +84,28 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.C))
             {
-                skillCode = eSkill.TELEPORT;
+                skillCode = eSkill.SHIFT;
                 curState = ePlayerState.SKILL;
             }
 
             if (Input.GetKeyDown(KeyCode.A))
             {
-                return;
-                //skillMgr.A();
-                //curState = ePlayerState.SKILL;
+                skillMgr.A();
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                return;
-                //skillMgr.S();
-                //curState = ePlayerState.SKILL;
+                skillMgr.S();
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                return;
-                //skillMgr.D();
-                //curState = ePlayerState.SKILL;
+                skillMgr.D();
             }
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                return;
-                //skillMgr.F();
-                //curState = ePlayerState.SKILL;
+                skillMgr.F();
             }
         }
     }
@@ -113,15 +116,15 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-                if (ui.isInventory)
+                if (uiMgr.isInventory)
                 {
                     curState = ePlayerState.NONE;
-                    ui.OffInventory();
+                    uiMgr.OffInventory();
                 }
                 else
                 {
                     curState = ePlayerState.UI;
-                    ui.OnInventory();
+                    uiMgr.OnInventory();
                 }
             }
         }

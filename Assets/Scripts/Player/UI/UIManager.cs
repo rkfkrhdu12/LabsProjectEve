@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum eUI
+public enum eUI
 {
     HEALTH,
     ENERGY,
+    SKILL,
     INVENTORY,
     LAST,
 }
@@ -14,24 +15,28 @@ public class UIManager : MonoBehaviour
 {
     public GameObject playerUIObj;
 
-    GameObject[] obj = new GameObject[(int)eUI.LAST];
-    PlayerUI[] pUI = new PlayerUI[(int)eUI.LAST];
+    GameObject[] uiObj = new GameObject[(int)eUI.LAST];
+    public PlayerUI[] pUI = new PlayerUI[(int)eUI.LAST];
 
-    void Start()
+    void Awake()
     {
         StartUI((int)eUI.HEALTH, new PlayerHealthUI(), true);
 
         StartUI((int)eUI.ENERGY, new PlayerEnergyUI(), true);
 
+        StartUI((int)eUI.SKILL, new PlayerSkillUI(), true);
+
         StartUI((int)eUI.INVENTORY, new PlayerInventoryUI(), false);
     }
 
-    void StartUI(int ui,PlayerUI pui, bool isactive)
+    void StartUI(int nui,PlayerUI pui, bool isactive)
     {
-        pUI[ui] = pui;
-        obj[ui] = playerUIObj.transform.GetChild(ui).gameObject;
-        pUI[ui].Start(obj[ui]);
-        obj[ui].SetActive(isactive);
+        pUI[nui] = pui;
+        uiObj[nui] = playerUIObj.transform.GetChild(nui).gameObject;
+
+        pUI[nui].Start(uiObj[nui]);
+
+        uiObj[nui].SetActive(isactive);
     }
 
     public bool isInventory = false;
@@ -42,8 +47,10 @@ public class UIManager : MonoBehaviour
     {
         if (!isInventory)
         {
-            pUI[(int)eUI.HEALTH].Update();
-            pUI[(int)eUI.ENERGY].Update();
+            for (int i = 0; i < (int)eUI.INVENTORY; ++i)
+            {
+                pUI[i].Update();
+            }
         }
         else
         {
@@ -59,19 +66,28 @@ public class UIManager : MonoBehaviour
     public void OnInventory()
     {
         isInventory = true;
-        obj[(int)eUI.INVENTORY].SetActive(true);
+        uiObj[(int)eUI.INVENTORY].SetActive(true);
         pUI[(int)eUI.INVENTORY].Update();
 
-        obj[(int)eUI.HEALTH].SetActive(false);
-        obj[(int)eUI.ENERGY].SetActive(false);
+        for (int i = 0; i < (int)eUI.INVENTORY; ++i)
+        {
+            uiObj[i].SetActive(false);
+        }
     }
 
     public void OffInventory()
     {
         isInventory = false;
-        obj[(int)eUI.INVENTORY].SetActive(false);
+        uiObj[(int)eUI.INVENTORY].SetActive(false);
 
-        obj[(int)eUI.HEALTH].SetActive(true);
-        obj[(int)eUI.ENERGY].SetActive(true);
+        for (int i = 0; i < (int)eUI.INVENTORY; ++i)
+        {
+            uiObj[i].SetActive(true);
+        }
+    }
+
+    public PlayerSkillUI GetPlayerSkillUI()
+    {
+        return (PlayerSkillUI)pUI[(int)eUI.SKILL];
     }
 }

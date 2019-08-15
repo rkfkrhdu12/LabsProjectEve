@@ -2,31 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eSkill
-{
-    NONE,
-    DEFAULT_ATTACK,
-    TELEPORT,
-    LAST,
-}
-
 public class Skill
 {
     protected PlayerController pCtrl;
     protected PlayerAnimation pAni;
     protected Animator pAnimator;
-    protected bool isCool;
+
+    public bool isCool;
+    public bool isUI;
+    public int UINumber;
+
     protected float coolTime = 0.0f;
     protected float coolInterval = 1.0f;
 
-    public virtual void Init()
+    public virtual void Init(float cool)
     {
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
         pAni = pCtrl.mesh.GetComponent<PlayerAnimation>();
         pAnimator = pAni.GetComponent<Animator>();
 
         coolTime = 0.0f;
-        coolInterval = 0.0f;
+        coolInterval = cool;
+        isCool = false;
+        isUI = false;
     }
 
     public virtual void ReadySkill()

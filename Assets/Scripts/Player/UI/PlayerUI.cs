@@ -13,5 +13,14 @@ public class PlayerUI
     {
 
     }
-    
+
+    virtual public void ONUI(int count)
+    {
+       
+    }
+
+    virtual public void OFFUI(int count)
+    {
+
+    }
 }

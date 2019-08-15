@@ -189,8 +189,12 @@
     <Compile Include="Assets\Scripts\Player\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\Skill.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\SkillDefaultAttack.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillElectron.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillFlame.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillFreezing.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\SkillManager.cs" />
-    <Compile Include="Assets\Scripts\Player\Skill\SkillTelePort.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillShift.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillSwift.cs" />
     <Compile Include="Assets\Scripts\Player\State\State.cs" />
     <Compile Include="Assets\Scripts\Player\State\StateManager.cs" />
     <Compile Include="Assets\Scripts\Player\State\StateMove.cs" />
@@ -199,6 +203,7 @@
     <Compile Include="Assets\Scripts\Player\UI\PlayerEnergyUI.cs" />
     <Compile Include="Assets\Scripts\Player\UI\PlayerHealthUI.cs" />
     <Compile Include="Assets\Scripts\Player\UI\PlayerInventoryUI.cs" />
+    <Compile Include="Assets\Scripts\Player\UI\PlayerSkillUI.cs" />
     <Compile Include="Assets\Scripts\Player\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\Player\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\Player\UI\ValueUI.cs" />
