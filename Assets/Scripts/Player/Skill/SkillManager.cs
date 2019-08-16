@@ -11,7 +11,7 @@ public struct SkillData
 
 public struct SkillSlot
 {
-    public GameObject ui;
+    public SkillCoolTime coolTimeUI;
     public eSkill skill;
 }
 
@@ -49,19 +49,21 @@ public class SkillManager : MonoBehaviour
         skillData[(int)eSkill.SHIFT].coolTime = 2f;
         skillData[(int)eSkill.SHIFT].epPrice = 0;
 
-        skillData[(int)eSkill.FLAME].coolTime = 2f;
+        // Skill
+
+        skillData[(int)eSkill.FLAME].coolTime = 12f;
         skillData[(int)eSkill.FLAME].epPrice = 30;
         skillData[(int)eSkill.FLAME].damage = 1.2f;
 
-        skillData[(int)eSkill.SWIFT].coolTime = 5f;
+        skillData[(int)eSkill.SWIFT].coolTime = 15f;
         skillData[(int)eSkill.SWIFT].epPrice = 40;
         skillData[(int)eSkill.SWIFT].damage = 1.4f;
 
-        skillData[(int)eSkill.ELECTRON].coolTime = 0;
+        skillData[(int)eSkill.ELECTRON].coolTime = 10;
         skillData[(int)eSkill.ELECTRON].epPrice = 40;
         skillData[(int)eSkill.ELECTRON].damage = 1.1f;
 
-        skillData[(int)eSkill.FREEZING].coolTime = 8;
+        skillData[(int)eSkill.FREEZING].coolTime = 18;
         skillData[(int)eSkill.FREEZING].epPrice = 20;
         skillData[(int)eSkill.FREEZING].damage = 1.3f;
     }
@@ -88,13 +90,14 @@ public class SkillManager : MonoBehaviour
             skill[i].Init(skillData[i].coolTime);
         }
 
-        slot[(int)eSkillSlot.A].ui = GetComponent<UIManager>().GetPlayerSkillUI().A();
-        slot[(int)eSkillSlot.S].ui = GetComponent<UIManager>().GetPlayerSkillUI().S();
-        slot[(int)eSkillSlot.D].ui = GetComponent<UIManager>().GetPlayerSkillUI().D();
-        slot[(int)eSkillSlot.F].ui = GetComponent<UIManager>().GetPlayerSkillUI().F();
+        SetSlotUI(eSkillSlot.A);
+        SetSlotUI(eSkillSlot.S);
+        SetSlotUI(eSkillSlot.D);
+        SetSlotUI(eSkillSlot.F);
 
         pCtrl = GetComponent<PlayerController>();
     }
+
 
     void Update()
     {
@@ -107,46 +110,57 @@ public class SkillManager : MonoBehaviour
     }
     
     public void SetA(eSkill skill) { SetSkill(skill, eSkillSlot.A); }
-    public void A()
+    public void A(MonsterContorll mob, float weapondamage)
     {
-        ActiveSkill(eSkillSlot.A);
+        ActiveSkill(eSkillSlot.A, mob, weapondamage);
     }
 
     public void SetS(eSkill skill) { SetSkill(skill, eSkillSlot.S); }
-    public void S()
+    public void S(MonsterContorll mob, float weapondamage)
     {
-        ActiveSkill(eSkillSlot.S);
+        ActiveSkill(eSkillSlot.S, mob, weapondamage);
     }
 
     public void SetD(eSkill skill) { SetSkill(skill, eSkillSlot.D); }
-    public void D()
+    public void D(MonsterContorll mob, float weapondamage)
     {
-        ActiveSkill(eSkillSlot.D);
+        ActiveSkill(eSkillSlot.D, mob, weapondamage);
     }
 
     public void SetF(eSkill skill) { SetSkill(skill,eSkillSlot.F); }
-    public void F()
+    public void F(MonsterContorll mob, float weapondamage)
     {
-        ActiveSkill(eSkillSlot.F);
+        ActiveSkill(eSkillSlot.F, mob, weapondamage);
+    }
+
+    void SetSlotUI(eSkillSlot eslot)
+    {
+        slot[(int)eslot].coolTimeUI = GetComponent<UIManager>().GetSkillCoolTime(eslot);
     }
 
     public void SetSkill(eSkill eskill, eSkillSlot eslot)
     {
         slot[(int)eslot].skill = eskill;
         PlayerSkillUI pSkillUI = GetComponent<UIManager>().GetPlayerSkillUI();
+        
+        slot[(int)eslot].coolTimeUI.SetCoolTime(skillData[(int)eskill].coolTime);
 
-        pSkillUI.coolInterval[(int)eslot] = skillData[(int)eslot].coolTime;
         pSkillUI.slotSkill[(int)eslot] = eskill;
     }
 
-    public void ActiveSkill(eSkillSlot eslot)
+    public void ActiveSkill(eSkillSlot eslot, MonsterContorll mob, float weapondamage)
     {
+        if (skill[(int)slot[(int)eslot].skill].isCool) return;
         if (slot[(int)eslot].skill == eSkill.NONE) return;
 
         pCtrl.skillCode = slot[(int)eslot].skill;
         pCtrl.curState = ePlayerState.SKILL;
-        slot[(int)eslot].ui.transform.GetChild(0).gameObject.SetActive(true);
+
+        slot[(int)eslot].coolTimeUI.gameObject.SetActive(true);
+        slot[(int)eslot].coolTimeUI.Active();
+
         skill[(int)eslot + (int)eSkill.FLAME].isUI = true;
+        skill[(int)eslot + (int)eSkill.FLAME].SetAttack(mob, weapondamage);
     }
 
     void UpdateSkillUI()
@@ -156,9 +170,26 @@ public class SkillManager : MonoBehaviour
             if (!skill[i + (int)eSkill.FLAME].isCool && skill[i + (int)eSkill.FLAME].isUI)
             {
                 skill[i + (int)eSkill.FLAME].isUI = false;
-                slot[i].ui.transform.GetChild(0).gameObject.SetActive(false);
+                slot[i].coolTimeUI.gameObject.SetActive(false);
             }
-            
+        }
+    }
+
+    public bool isSwift = false;
+    public float swiftInterval = 5.0f;
+    public float swiftTime = 0.0f;
+
+    void UpdateSwift()
+    {
+        if (!isSwift) return;
+
+        swiftTime += Time.deltaTime;
+        if(swiftTime > swiftInterval)
+        {
+            swiftTime = 0;
+            isSwift = false;
+
+            pCtrl.SetAniSpeed(1);
         }
     }
 }

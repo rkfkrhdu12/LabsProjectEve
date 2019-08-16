@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class SkillSwift : Skill
 {
-    int tpSize = 2;
-
     public override void Init(float cool)
     {
         base.Init(cool);
 
+        ani = ePlayerAni.SWIFT;
         UINumber = 1;
     }
 
     public override void ReadySkill()
     {
-        if (isCool) { End(); return; }
-
-        isCool = true;
         base.ReadySkill();
 
-        Vector3 dir =
-            pCtrl.transform.localRotation * (Vector3.forward * tpSize);
+        pAnimator.speed = pCtrl.aniSpeed;
+        if (HitMob != null)
+            pCtrl.SetAniSpeed(5);
+    }
 
-        pCtrl.transform.position =
-            new Vector3(pCtrl.transform.position.x + dir.x,
-                        pCtrl.transform.position.y,
-                        pCtrl.transform.position.z + dir.z);
-        End();
+    public override void UpdateSkill()
+    {
+        if (pAni.curAni == ePlayerAni.IDLE)
+        {
+            End();
+        }
+    }
+
+    public override void End()
+    {
+        pCtrl.EndAttack();
+        pAni.ChangeAni(ePlayerAni.IDLE);
+
+        base.End();
     }
 }

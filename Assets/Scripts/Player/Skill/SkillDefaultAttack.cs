@@ -2,15 +2,20 @@
 
 public class SkillDefaultAttack : Skill
 {
+    public override void Init(float cool)
+    {
+        base.Init(cool);
+
+        ani = ePlayerAni.ATTACK;
+    }
+
     public override void ReadySkill()
     {
         base.ReadySkill();
 
-        pAni.ChangeAni(ePlayerAni.ATTACK01);
-        isCool = true;
+        pAnimator.speed = pCtrl.aniSpeed;
     }
 
-    private const string key_isAttack01 = "IsAttack01";
     public override void UpdateSkill()
     {
         if (pAni.curAni == ePlayerAni.IDLE)
@@ -21,6 +26,7 @@ public class SkillDefaultAttack : Skill
 
     public override void End()
     {
+        pCtrl.EndAttack();
         pAni.ChangeAni(ePlayerAni.IDLE);
 
         base.End();

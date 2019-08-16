@@ -55,10 +55,4 @@ public class PlayerCharacter : Character
         healthPoint = Mathf.Clamp(healthPoint, 0, maxHealth);
         energyPoint = Mathf.Clamp(energyPoint, 0, maxEnergy);
     }
-
-    public override void GetDamage(float damage)
-    {
-        base.GetDamage(damage);
-    }
-    
 }

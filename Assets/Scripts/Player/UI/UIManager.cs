@@ -90,4 +90,9 @@ public class UIManager : MonoBehaviour
     {
         return (PlayerSkillUI)pUI[(int)eUI.SKILL];
     }
+
+    public SkillCoolTime GetSkillCoolTime(eSkillSlot eskill)
+    {
+        return ((PlayerSkillUI)pUI[(int)eUI.SKILL]).GetSkillCoolTime(eskill);
+    }
 }

@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
-    float damage = 10;
+    public float damage = 10;
+
+    PlayerController pCtrl;
+
+    public void Start()
+    {
+        pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!pCtrl.isAttack) return;
+
+        pCtrl.isAttack = false;
         if(other.gameObject.CompareTag(GameManager.Instance.monsterTag))
         {
-            other.GetComponent<MonsterContorll>().GetDamage(damage);
+            MonsterContorll mob = other.GetComponent<MonsterContorll>();
+            pCtrl.SetAttack(mob, damage);
+            mob.GetDamage(damage);
         }
     }
 }

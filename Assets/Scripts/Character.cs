@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
 
     public eDeadState eDeadState = eDeadState.NONE; 
 
-    virtual public void GetDamage(float damage)
+    public void GetDamage(float damage)
     {
         healthPoint -= damage;
     }

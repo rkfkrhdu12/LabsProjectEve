@@ -188,6 +188,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\Skill.cs" />
+    <Compile Include="Assets\Scripts\Player\Skill\SkillCoolTime.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\SkillDefaultAttack.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\SkillElectron.cs" />
     <Compile Include="Assets\Scripts\Player\Skill\SkillFlame.cs" />

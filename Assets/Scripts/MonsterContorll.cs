@@ -52,6 +52,11 @@ public class MonsterContorll : Character
 
     private bool isDead = false;
 
+    bool isChainDamage = false;
+    float chainDamage = 0.0f;
+    float chainDamageTime = 0.0f;
+    float chainDamageInterval = 0.0f;
+
     void Start()
     {
         playerTransform = GameManager.Instance.player.transform;
@@ -69,7 +74,15 @@ public class MonsterContorll : Character
         healthPoint = 100;
         maxHealth = healthPoint;
         str = 10;
+        isChainDamage = false;
     }
+
+    void Update()
+    {
+        UpdateChainDamage();
+        UpdateParalysis();
+    }
+
 
     IEnumerator CheckState()
     {
@@ -105,9 +118,16 @@ public class MonsterContorll : Character
                     nvAgent.isStopped = true;
                     break;
                 case CurrentState.trace:
-                    nvAgent.destination = playerTransform.position;
-                    nvAgent.isStopped = false;
-                    ChangeAnimation(key_IsTrace);
+                    if (!isParalysis)
+                    {
+                        nvAgent.destination = playerTransform.position;
+                        nvAgent.isStopped = false;
+                        ChangeAnimation(key_IsTrace);
+                    }
+                    else
+                    {
+                        ParalysisEffect();
+                    }
                     break;
                 case CurrentState.attack:
                     transform.LookAt(playerTransform);
@@ -147,11 +167,74 @@ public class MonsterContorll : Character
         return str;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public bool isParalysis = false;
+    float paralysisTime = 0.0f;
+    float paralysisInterval = 0.0f;
+    public void SetParalysis(float paralysisinterval)
     {
-        if(collision.gameObject.CompareTag(GameManager.Instance.playerTag))
+        isParalysis = true;
+        paralysisInterval = paralysisinterval;
+    }
+
+    public void UpdateParalysis()
+    {
+        if (!isParalysis) return;
+
+        Debug.Log("isParalysis " +  isParalysis);
+
+        paralysisTime += Time.deltaTime;
+        if (paralysisInterval < paralysisTime)
         {
-            Debug.Log(1);
+            Debug.Log("isParalysis End");
+
+            paralysisTime = 0.0f;
+            isParalysis = false;
         }
+    }
+
+    bool isParalysisEffect = false;
+    void ParalysisEffect()
+    {
+        if (isParalysisEffect)
+        {
+            isParalysisEffect = false;
+            ChangeAnimation(key_IsIdle);
+        }
+        else
+        {
+            isParalysisEffect = true;
+            ChangeAnimation(key_IsTrace);
+        }
+    }
+
+    public void SetChainDamage(float chaindamage, float chaindamageinterval)
+    {
+        isChainDamage = true;
+        chainDamage = chaindamage;
+        chainDamageInterval = chaindamageinterval;
+    }
+
+    float chaning = 1.0f;
+
+    void UpdateChainDamage()
+    {
+        if (!isChainDamage) return;
+
+        chainDamageTime += Time.deltaTime;
+        if (chaning < chainDamageTime)
+        {
+            GetDamage(chainDamage);
+            if (chainDamageInterval < chainDamageTime)
+            {
+                chainDamageTime = 0.0f;
+                isChainDamage = false;
+            }
+            chaning++;
+        }
+    }
+
+    public void Freezing()
+    {
+        transform.Translate(0,0,-.2f);
     }
 }

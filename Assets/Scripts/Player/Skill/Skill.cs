@@ -8,9 +8,14 @@ public class Skill
     protected PlayerAnimation pAni;
     protected Animator pAnimator;
 
+    protected ePlayerAni ani;
+
     public bool isCool;
     public bool isUI;
     public int UINumber;
+
+    protected MonsterContorll HitMob;
+    protected float weaponDamage;
 
     protected float coolTime = 0.0f;
     protected float coolInterval = 1.0f;
@@ -25,11 +30,19 @@ public class Skill
         coolInterval = cool;
         isCool = false;
         isUI = false;
+        ani = ePlayerAni.IDLE;
     }
 
     public virtual void ReadySkill()
     {
+        if (isCool) { End(); return; }
+
+        isCool = true;
         pCtrl.ChangeState(ePlayerState.SKILL);
+        if (ePlayerAni.ATTACK <= ani)
+        {
+            pAni.ChangeAni(ani);
+        }
     }
 
     public virtual void UpdateSkill()
@@ -39,12 +52,17 @@ public class Skill
 
     public virtual void End()
     {
-        pCtrl.ChangeState(ePlayerState.MOVE);
     }
 
     public bool IsCool()
     {
         return isCool;
+    }
+
+    public virtual void SetAttack(MonsterContorll mob,float weapondamage)
+    {
+        HitMob = mob;
+        weaponDamage = weapondamage;
     }
 
     public virtual void UpdateCoolTime()

@@ -10,22 +10,29 @@ public enum ePlayerAni
     JUMP,
     DAMAGE,
     DEAD,
-    ATTACK01,
-    ATTACK02,
+    ATTACK,
+    FLAME,
+    SWIFT,
+    ELECTRON,
+    FREEZING,
 }
 
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField] Animator animator;
+    public Animator animator;
+    PlayerController pCtrl;
 
     private const string key_isWalk = "IsWalk";
     private const string key_isRun = "IsRun";
-    private const string key_isAttack01 = "IsAttack01";
-    private const string key_isAttack02 = "IsAttack02";
     private const string key_isJump = "IsJump";
     private const string key_isDamage = "IsDamage";
     private const string key_isDead = "IsDead";
     private const string key_isIdle = "IsIdle";
+    private const string key_isAttack = "IsAttack";
+    private const string key_isAttack1 = "IsSkill1";
+    private const string key_isAttack2 = "IsSkill2";
+    private const string key_isAttack3 = "IsSkill3";
+    private const string key_isAttack4 = "IsSkill4";
 
     public ePlayerAni curAni;
 
@@ -38,25 +45,36 @@ public class PlayerAnimation : MonoBehaviour
         isAttack = false;
 
         animator = GetComponent<Animator>();
+        pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
 
         StopAttack();
     }
 
+    float attackTime = 0.0f;
+    float attackInterval;
+
     void Update()
     {
-        animator.SetBool(curAniKey, true);
+        if (!isAttack) return;
+
+
     }
 
     bool isAttack = false;
     public void StopAttack()
     {
         isAttack = false;
+        pCtrl.isAttack = false;
+
         ChangeAni(ePlayerAni.IDLE);
+        pCtrl.ChangeState(ePlayerState.MOVE);
     }
 
     public void ChangeAni(ePlayerAni changeAni)
     {
         if (isAttack) return;
+
+        Debug.Log(isAttack + " " + changeAni + " " + curAni);
 
         if (changeAni != curAni)
         {
@@ -83,15 +101,29 @@ public class PlayerAnimation : MonoBehaviour
                 case ePlayerAni.DEAD:
                     curAniKey = key_isDead;
                     break;
-                case ePlayerAni.ATTACK01:
-                    curAniKey = key_isAttack01;
+                case ePlayerAni.ATTACK:
+                    curAniKey = key_isAttack;
                     isAttack = true;
                     break;
-                case ePlayerAni.ATTACK02:
-                    curAniKey = key_isAttack02;
+                case ePlayerAni.FLAME:
+                    curAniKey = key_isAttack1;
+                    isAttack = true;
+                    break;
+                case ePlayerAni.SWIFT:
+                    curAniKey = key_isAttack2;
+                    isAttack = true;
+                    break;
+                case ePlayerAni.ELECTRON:
+                    curAniKey = key_isAttack3;
+                    isAttack = true;
+                    break;
+                case ePlayerAni.FREEZING:
+                    curAniKey = key_isAttack4;
                     isAttack = true;
                     break;
             }
+
+            animator.SetBool(curAniKey, true);
         }
     }
 }

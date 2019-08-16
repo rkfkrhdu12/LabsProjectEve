@@ -4,29 +4,37 @@ using UnityEngine;
 
 public class SkillElectron : Skill
 {
-    int tpSize = 2;
-
     public override void Init(float cool)
     {
         base.Init(cool);
 
+        ani = ePlayerAni.ELECTRON;
         UINumber = 2;
     }
 
     public override void ReadySkill()
     {
-        if (isCool) { End(); return; }
-
-        isCool = true;
         base.ReadySkill();
+        
+        pAnimator.speed = pCtrl.aniSpeed;
 
-        Vector3 dir =
-            pCtrl.transform.localRotation * (Vector3.forward * tpSize);
+        if (HitMob != null)
+            HitMob.SetParalysis(2);
+    }
 
-        pCtrl.transform.position =
-            new Vector3(pCtrl.transform.position.x + dir.x,
-                        pCtrl.transform.position.y,
-                        pCtrl.transform.position.z + dir.z);
-        End();
+    public override void UpdateSkill()
+    {
+        if (pAni.curAni == ePlayerAni.IDLE)
+        {
+            End();
+        }
+    }
+
+    public override void End()
+    {
+        pCtrl.EndAttack();
+        pAni.ChangeAni(ePlayerAni.IDLE);
+
+        base.End();
     }
 }

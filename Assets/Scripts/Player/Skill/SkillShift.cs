@@ -6,9 +6,6 @@ public class SkillShift : Skill
 
     public override void ReadySkill()
     {
-        if (isCool) { End(); return; }
-
-        isCool = true;
         base.ReadySkill();
 
         Vector3 dir =

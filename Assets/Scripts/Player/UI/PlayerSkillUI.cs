@@ -12,12 +12,6 @@ struct skillUI
 
 public class PlayerSkillUI : PlayerUI
 {
-    //public Image[] skillIcon = new Image[(int)eSkill.LAST - (int)eSkill.FLAME];
-    //public GameObject[] coolTimeUI = new GameObject[(int)eSkill.LAST - (int)eSkill.FLAME];
-
-    //public float[] coolTime = new float[(int)eSkill.LAST - (int)eSkill.FLAME];
-
-    public float[] coolInterval = new float[(int)eSkill.LAST - (int)eSkill.FLAME];
     public eSkill[] slotSkill = new eSkill[(int)eSkill.LAST - (int)eSkill.FLAME];
 
     skillUI[] skillUI = new skillUI[(int)eSkill.LAST - (int)eSkill.FLAME];
@@ -35,42 +29,18 @@ public class PlayerSkillUI : PlayerUI
             skillUI[i].coolTimeUI.SetActive(false);
 
             skillUI[i].coolTime = 0;
-            coolInterval[i] = 0;
         }
 
         skillMgr = GameManager.Instance.player.GetComponent<SkillManager>();
     }
 
-    public override void Update()
+    public SkillCoolTime GetObj(int count)
     {
-        base.Update();
-
-        for (int i = 0; i < (int)eSkill.LAST - (int)eSkill.FLAME; ++i)
-        {
-            if (skillUI[i].coolTimeUI.activeSelf)
-            {
-                skillUI[i].coolTimeUI.transform.GetChild(1).GetComponent<Text>().text = "" + (int)(coolInterval[i] - skillUI[i].coolTime);
-
-                skillUI[i].coolTime += Time.deltaTime;
-                if (skillUI[i].coolTime > coolInterval[i])
-                {
-                    skillUI[i].coolTime = 0;
-                }
-
-            }
-        }
-    }
-
-    public GameObject GetObj(int count)
-    {
-        return skillIcon[count].gameObject;
+        return skillUI[count].coolTimeUI.GetComponent<SkillCoolTime>();
     }
     
-    public GameObject A() { return GetObj(0); }
-    
-    public GameObject S() { return GetObj(1); }
-    
-    public GameObject D() { return GetObj(2); }
-    
-    public GameObject F() { return GetObj(3); }
+    public SkillCoolTime GetSkillCoolTime(eSkillSlot eskill)
+    {
+        return GetObj((int)eskill);
+    }
 }
