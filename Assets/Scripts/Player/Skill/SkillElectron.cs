@@ -9,21 +9,15 @@ public class SkillElectron : Skill
         base.Init(cool);
 
         ani = ePlayerAni.ELECTRON;
-        UINumber = 2;
-    }
-
-    public override void ReadySkill()
-    {
-        base.ReadySkill();
-        
-        pAnimator.speed = pCtrl.aniSpeed;
-
-        if (HitMob != null)
-            HitMob.SetParalysis(2);
     }
 
     public override void UpdateSkill()
     {
+        if (HitMob != null && !isEffect)
+        {
+            isEffect = true;
+            HitMob.SetParalysis(2);
+        }
         if (pAni.curAni == ePlayerAni.IDLE)
         {
             End();
@@ -33,7 +27,6 @@ public class SkillElectron : Skill
     public override void End()
     {
         pCtrl.EndAttack();
-        pAni.ChangeAni(ePlayerAni.IDLE);
 
         base.End();
     }

@@ -62,6 +62,11 @@ public class MonsterContorll : Character
         playerTransform = GameManager.Instance.player.transform;
         if (nvAgent == null)
             nvAgent = GetComponent<NavMeshAgent>();
+        if(!gameObject.CompareTag(GameManager.Instance.monsterTag))
+        {
+            gameObject.tag = GameManager.Instance.monsterTag;
+        }
+
         _animator = GetComponent<Animator>();
 
         attackDist = nvAgent.stoppingDistance;
@@ -141,6 +146,7 @@ public class MonsterContorll : Character
     string key_IsIdle = "IsIdle";
     string key_IsTrace = "IsTrace";
     string key_IsAttack = "IsAttack";
+    string key_IsHit = "IsHit";
 
     string curAni = "IsTrace";
     void ChangeAnimation(string changeAni)
@@ -154,14 +160,6 @@ public class MonsterContorll : Character
     }
 
     /// 
-    public MonsterWeapon[] hand;
-    
-    public void LeftHandAttackStart() { hand[0].ON(); }
-    public void LeftHandAttackEnd() { hand[0].OFF(); }
-
-    public void RightHandAttackStart() { hand[1].ON(); }
-    public void RightHandAttackEnd() { hand[1].OFF(); }
-    
     public float Str()
     {
         return str;
@@ -180,13 +178,9 @@ public class MonsterContorll : Character
     {
         if (!isParalysis) return;
 
-        Debug.Log("isParalysis " +  isParalysis);
-
         paralysisTime += Time.deltaTime;
         if (paralysisInterval < paralysisTime)
         {
-            Debug.Log("isParalysis End");
-
             paralysisTime = 0.0f;
             isParalysis = false;
         }
@@ -235,6 +229,13 @@ public class MonsterContorll : Character
 
     public void Freezing()
     {
-        transform.Translate(0,0,-.2f);
+        transform.Translate(0,0,-2f);
+    }
+
+    public override void GetDamage(float damage)
+    {
+        ChangeAnimation(key_IsHit);
+
+        base.GetDamage(damage);
     }
 }

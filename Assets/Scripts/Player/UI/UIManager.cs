@@ -40,9 +40,7 @@ public class UIManager : MonoBehaviour
     }
 
     public bool isInventory = false;
-
-    float loadTime = 0.0f;
-    float loadInterval = .5f;
+    
     void Update()
     {
         if (!isInventory)
@@ -54,12 +52,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            loadTime += Time.deltaTime;
-            if(loadTime > loadInterval)
-            {
-                loadTime = 0.0f;
-                pUI[(int)eUI.INVENTORY].Update();
-            }
+            pUI[(int)eUI.INVENTORY].Update();
         }
     }
 

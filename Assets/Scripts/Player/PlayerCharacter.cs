@@ -11,7 +11,7 @@ public class PlayerCharacter : Character
 
     public float energyPoint = 100;
     public float maxEnergy = 100;
-    protected float energyRegen = 4;
+    protected float regenEnergy = 4;
 
     protected float regenTime = 0.0f;
     protected float regenInterval = 1.0f;
@@ -41,6 +41,8 @@ public class PlayerCharacter : Character
                 break;
             case eDeadState.REVIVE:
                 eDeadState = eDeadState.NONE;
+                healthPoint = maxHealth * reviveHealth;
+                energyPoint = maxEnergy * reviveEnergy;
                 break;
         }
 
@@ -49,10 +51,29 @@ public class PlayerCharacter : Character
         {
             regenTime = 0.0f;
 
-            healthPoint += healthRegen;
-            energyPoint += energyRegen;
+            healthPoint += regenHealth;
+            energyPoint += regenEnergy;
         }
         healthPoint = Mathf.Clamp(healthPoint, 0, maxHealth);
         energyPoint = Mathf.Clamp(energyPoint, 0, maxEnergy);
+    }
+
+    public float GetStatus(int count)
+    {
+        switch (count)
+        {
+            case 0:
+                return pCtrl.weaponDamage;
+            case 1:
+                return maxHealth;
+            case 2:
+                return maxEnergy;
+            case 3:
+                return regenHealth;
+            case 4:
+                return regenEnergy;
+        }
+
+        return -1;
     }
 }

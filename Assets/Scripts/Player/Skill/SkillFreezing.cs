@@ -9,20 +9,16 @@ public class SkillFreezing : Skill
         base.Init(cool);
 
         ani = ePlayerAni.FREEZING;
-        UINumber = 3;
-    }
-
-    public override void ReadySkill()
-    {
-        base.ReadySkill();
-
-        pAnimator.speed = pCtrl.aniSpeed;
-        if (HitMob != null)
-            HitMob.Freezing();
     }
 
     public override void UpdateSkill()
     {
+        if (HitMob != null && !isEffect)
+        {
+            isEffect = true;
+            HitMob.Freezing();
+        }
+
         if (pAni.curAni == ePlayerAni.IDLE)
         {
             End();
@@ -32,7 +28,6 @@ public class SkillFreezing : Skill
     public override void End()
     {
         pCtrl.EndAttack();
-        pAni.ChangeAni(ePlayerAni.IDLE);
 
         base.End();
     }

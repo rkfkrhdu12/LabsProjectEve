@@ -14,13 +14,13 @@ public class Character : MonoBehaviour
 {
     public float healthPoint = 200;
     public float maxHealth = 200;
-    protected float healthRegen = 4;
+    protected float regenHealth = 4;
 
     protected float str = 100;
 
     public eDeadState eDeadState = eDeadState.NONE; 
 
-    public void GetDamage(float damage)
+    virtual public void GetDamage(float damage)
     {
         healthPoint -= damage;
     }

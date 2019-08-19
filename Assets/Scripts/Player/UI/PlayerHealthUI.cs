@@ -9,5 +9,7 @@ public class PlayerHealthUI : ValueUI
     {
         value = character.healthPoint;
         maxvalue = character.maxHealth;
+
+        base.Init();
     }
 }

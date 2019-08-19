@@ -17,4 +17,11 @@ public class SkillShift : Skill
                         pCtrl.transform.position.z + dir.z);
         End();
     }
+
+    public override void End()
+    {
+        pCtrl.ChangeState(ePlayerState.MOVE);
+
+        base.End();
+    }
 }

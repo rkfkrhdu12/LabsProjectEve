@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public struct SkillData
 {
@@ -34,11 +35,15 @@ public enum eSkillSlot
 public class SkillManager : MonoBehaviour
 {
     public PlayerController pCtrl;
+    PlayerCharacter pChar;
     public PlayerSkillUI pSkillUI;
+    UIManager uiMgr;
 
     public Skill[] skill = new Skill[(int)eSkill.LAST];
     public SkillData[] skillData = new SkillData[(int)eSkill.LAST];
-    SkillSlot[] slot = new SkillSlot[(int)eSkill.LAST -(int)eSkill.FLAME]; 
+    SkillSlot[] slot = new SkillSlot[(int)eSkill.LAST -(int)eSkill.FLAME];
+
+    public Sprite[] skillImage = new Sprite[(int)eSkill.LAST - (int)eSkill.FLAME];
 
     void InitData()
     {
@@ -72,6 +77,10 @@ public class SkillManager : MonoBehaviour
     {
         InitData();
 
+        uiMgr = GetComponent<UIManager>();
+        pCtrl = GetComponent<PlayerController>();
+        pChar = GetComponent<PlayerCharacter>();
+
         skill = new Skill[(int)eSkill.LAST];
 
         skill[(int)eSkill.NONE] = null;
@@ -85,7 +94,7 @@ public class SkillManager : MonoBehaviour
 
     public void Start()
     {
-        for (int i = (int)eSkill.DEFAULT_ATTACK; i < (int)eSkill.LAST; ++i)
+        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skill.Length; ++i)
         {
             skill[i].Init(skillData[i].coolTime);
         }
@@ -95,23 +104,20 @@ public class SkillManager : MonoBehaviour
         SetSlotUI(eSkillSlot.D);
         SetSlotUI(eSkillSlot.F);
 
-        pCtrl = GetComponent<PlayerController>();
     }
-
 
     void Update()
     {
         UpdateSkillUI();
-
-        for (int i = (int)eSkill.DEFAULT_ATTACK; i < (int)eSkill.LAST; ++i)
-        {
-            skill[i].UpdateCoolTime();
-        }
+        UpdateCoolTime();
     }
-    
+
+    #region PublicSkillFuc
+
     public void SetA(eSkill skill) { SetSkill(skill, eSkillSlot.A); }
     public void A(MonsterContorll mob, float weapondamage)
     {
+
         ActiveSkill(eSkillSlot.A, mob, weapondamage);
     }
 
@@ -132,32 +138,41 @@ public class SkillManager : MonoBehaviour
     {
         ActiveSkill(eSkillSlot.F, mob, weapondamage);
     }
+    #endregion
 
     void SetSlotUI(eSkillSlot eslot)
     {
-        slot[(int)eslot].coolTimeUI = GetComponent<UIManager>().GetSkillCoolTime(eslot);
+        slot[(int)eslot].coolTimeUI = uiMgr.GetSkillCoolTime(eslot);
     }
 
-    public void SetSkill(eSkill eskill, eSkillSlot eslot)
+    void SetSkill(eSkill eskill, eSkillSlot eslot)
     {
         slot[(int)eslot].skill = eskill;
-        PlayerSkillUI pSkillUI = GetComponent<UIManager>().GetPlayerSkillUI();
-        
-        slot[(int)eslot].coolTimeUI.SetCoolTime(skillData[(int)eskill].coolTime);
+        PlayerSkillUI pSkillUI = uiMgr.GetPlayerSkillUI();
 
+        pSkillUI.GetImage(eslot).sprite = skillImage[(int)eslot];
         pSkillUI.slotSkill[(int)eslot] = eskill;
     }
 
-    public void ActiveSkill(eSkillSlot eslot, MonsterContorll mob, float weapondamage)
+    void CheckActiveSkill(eSkillSlot eslot)
     {
+        if (skillData[(int)slot[(int)eslot].skill].epPrice > pChar.energyPoint) return;
         if (skill[(int)slot[(int)eslot].skill].isCool) return;
         if (slot[(int)eslot].skill == eSkill.NONE) return;
+
+        pChar.energyPoint -= skillData[(int)slot[(int)eslot].skill].epPrice;
+    }
+
+    void ActiveSkill(eSkillSlot eslot, MonsterContorll mob, float weapondamage)
+    {
+        CheckActiveSkill(eslot);
+
+        Debug.Log("0");
 
         pCtrl.skillCode = slot[(int)eslot].skill;
         pCtrl.curState = ePlayerState.SKILL;
 
         slot[(int)eslot].coolTimeUI.gameObject.SetActive(true);
-        slot[(int)eslot].coolTimeUI.Active();
 
         skill[(int)eslot + (int)eSkill.FLAME].isUI = true;
         skill[(int)eslot + (int)eSkill.FLAME].SetAttack(mob, weapondamage);
@@ -165,7 +180,7 @@ public class SkillManager : MonoBehaviour
 
     void UpdateSkillUI()
     {
-        for (int i = 0; i < (int)eSkill.LAST - (int)eSkill.FLAME; ++i)
+        for (int i = 0; i < slot.Length; ++i)
         {
             if (!skill[i + (int)eSkill.FLAME].isCool && skill[i + (int)eSkill.FLAME].isUI)
             {
@@ -175,21 +190,13 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public bool isSwift = false;
-    public float swiftInterval = 5.0f;
-    public float swiftTime = 0.0f;
-
-    void UpdateSwift()
+    void UpdateCoolTime()
     {
-        if (!isSwift) return;
-
-        swiftTime += Time.deltaTime;
-        if(swiftTime > swiftInterval)
+        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skill.Length; ++i)
         {
-            swiftTime = 0;
-            isSwift = false;
-
-            pCtrl.SetAniSpeed(1);
+            skill[i].UpdateCoolTime();
+            if (i > 2)
+                slot[i - 3].coolTimeUI.GetRemainTime(skill[i].GetRemainTime());
         }
     }
 }

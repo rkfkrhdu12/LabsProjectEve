@@ -9,5 +9,7 @@ public class PlayerEnergyUI : ValueUI
     {
         value = character.energyPoint;
         maxvalue = character.maxEnergy;
+
+        base.Init();
     }
 }

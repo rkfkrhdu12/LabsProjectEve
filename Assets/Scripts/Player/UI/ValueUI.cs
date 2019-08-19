@@ -25,10 +25,12 @@ public class ValueUI : PlayerUI
         text = healthUIObj.transform.GetChild(nTextObj).GetComponent<Text>();
 
         character = GameManager.Instance.player.GetComponent<PlayerCharacter>();
+
     }
 
     public virtual void Init()
     {
+        slider.maxValue = maxvalue;
     }
 
     public override void Update()

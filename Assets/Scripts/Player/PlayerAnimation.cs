@@ -46,18 +46,14 @@ public class PlayerAnimation : MonoBehaviour
 
         animator = GetComponent<Animator>();
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
+        aniAttackSpeed = 1;
 
         StopAttack();
     }
 
-    float attackTime = 0.0f;
-    float attackInterval;
-
     void Update()
     {
-        if (!isAttack) return;
-
-
+        UpdateSkillSwift();
     }
 
     bool isAttack = false;
@@ -66,15 +62,16 @@ public class PlayerAnimation : MonoBehaviour
         isAttack = false;
         pCtrl.isAttack = false;
 
-        ChangeAni(ePlayerAni.IDLE);
         pCtrl.ChangeState(ePlayerState.MOVE);
+
+        animator.SetBool(curAniKey, false);
+        curAniKey = key_isIdle;
+        animator.SetBool(curAniKey, true);
     }
 
     public void ChangeAni(ePlayerAni changeAni)
     {
         if (isAttack) return;
-
-        Debug.Log(isAttack + " " + changeAni + " " + curAni);
 
         if (changeAni != curAni)
         {
@@ -122,8 +119,40 @@ public class PlayerAnimation : MonoBehaviour
                     isAttack = true;
                     break;
             }
-
+            if (curAni >= ePlayerAni.ATTACK)
+            {
+                animator.speed = aniAttackSpeed;
+            }
+            else
+            {
+                animator.speed = 1;
+            }
             animator.SetBool(curAniKey, true);
         }
+    }
+
+    float aniAttackSpeed;
+    float speedTime = 0.0f;
+    float speedInterval = 0.0f;
+
+    public void SetSkillSwift(float anispeed, float speedinterval)
+    {
+        aniAttackSpeed = anispeed;
+        speedInterval = speedinterval;
+    }
+
+    public void UpdateSkillSwift()
+    {
+        if (speedInterval <= 0.1f) return;
+
+        speedTime += Time.deltaTime;
+        if(speedTime > speedInterval)
+        {
+            speedTime = 0.0f;
+
+            speedInterval = 0.0f;
+            aniAttackSpeed = 1;
+        }
+
     }
 }

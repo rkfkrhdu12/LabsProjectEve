@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class SkillCoolTime : MonoBehaviour
 {
-    private float coolInterval;
-    private float coolTime;
+    private float remainTime;
 
     private string skill;
 
@@ -14,8 +13,6 @@ public class SkillCoolTime : MonoBehaviour
 
     void Awake()
     {
-        coolTime = 0.0f;
-        isActive = false;
         coolTimeText = transform.GetChild(1).GetComponent<Text>();
 
         skill = transform.parent.name;
@@ -23,27 +20,11 @@ public class SkillCoolTime : MonoBehaviour
 
     void Update()
     {
-        if (!isActive) return;
-
-        coolTimeText.text = "" + (int)(coolInterval - coolTime);
-
-        coolTime += Time.deltaTime;
-        if(coolTime > coolInterval)
-        {
-            coolTime = 0.0f;
-            isActive = false;
-        }
+        coolTimeText.text = "" + (int)remainTime;
     }
 
-    public void SetCoolTime(float cooltime)
+    public void GetRemainTime(float remaintime)
     {
-        coolInterval = cooltime;
-    }
-
-    bool isActive = false;
-    public void Active()
-    {
-        isActive = true;
-        coolTime = 0.0f;
+        remainTime = remaintime;
     }
 }

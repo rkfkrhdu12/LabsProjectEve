@@ -9,20 +9,16 @@ public class SkillFlame : Skill
         base.Init(cool);
 
         ani = ePlayerAni.FLAME;
-        UINumber = 0;
-    }
-
-    public override void ReadySkill()
-    {
-        base.ReadySkill();
-
-        pAnimator.speed = pCtrl.aniSpeed;
-        if (HitMob != null)
-            HitMob.SetChainDamage(weaponDamage * .04f, 5);
     }
 
     public override void UpdateSkill()
     {
+        if (HitMob != null && !isEffect)
+        {
+            isEffect = true;
+            HitMob.SetChainDamage(weaponDamage * .04f, 5);
+        }
+
         if (pAni.curAni == ePlayerAni.IDLE)
         {
             End();
@@ -32,7 +28,6 @@ public class SkillFlame : Skill
     public override void End()
     {
         pCtrl.EndAttack();
-        pAni.ChangeAni(ePlayerAni.IDLE);
 
         base.End();
     }

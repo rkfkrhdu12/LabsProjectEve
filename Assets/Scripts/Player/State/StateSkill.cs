@@ -22,7 +22,6 @@ public class StateSkill : State
 
     public override void UpdateState()
     {
-
         skillMgr.skill[(int)pCtrl.skillCode].UpdateSkill();
     }
 

@@ -14,22 +14,17 @@ public enum ePlayerState
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerAnimation pAni;
-    public UIManager uiMgr;
-    public SkillManager skillMgr;
-    public GameObject mesh;
-
-    public float moveSpeed = 7;
-    public float rotateSpeed = 80;
+    PlayerAnimation pAni;
+    UIManager uiMgr;
+    SkillManager skillMgr;
 
     public float z;
     public float x;
 
     public eSkill skillCode;
     MonsterContorll Mob;
-    float weaponDamage;
+    public float weaponDamage;
 
-    public Animation attackAni;
     public bool isAttack;
 
     private void Awake()
@@ -59,8 +54,7 @@ public class PlayerController : MonoBehaviour
 
     void Init()
     {
-        mesh = gameObject;
-
+        pAni = GetComponent<PlayerAnimation>();
         uiMgr = GetComponent<UIManager>();
         skillMgr = GetComponent<SkillManager>();
 
@@ -75,15 +69,8 @@ public class PlayerController : MonoBehaviour
 
     public void EndAttack()
     {
-        pAni.animator.speed = 1;
         Mob = null;
         weaponDamage = 0;
-    }
-
-    public float aniSpeed = 1;
-    public void SetAniSpeed(float speed)
-    {
-        aniSpeed = speed;
     }
 
     // Input
@@ -110,7 +97,6 @@ public class PlayerController : MonoBehaviour
             {
                 skillCode = eSkill.SHIFT;
                 curState = ePlayerState.SKILL;
-                isAttack = true;
             }
 
 
@@ -173,23 +159,22 @@ public class PlayerController : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                z -= .5f;
+                z -= 1f;
             }
 
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 x += 1;
-                if (z == 0) z += .3f;
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 x -= 1;
-                if (z == 0) z += .3f;
             }
 
+            if (x != 0)  { z += .5f; }
             if (z < 0) { x *= -1; }
 
-            z = Mathf.Clamp(z, -1, 1);
+            z = Mathf.Clamp(z, -.5f, 1);
             x = Mathf.Clamp(x, -1, 1);
 
             if (z != 0)

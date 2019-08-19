@@ -6,6 +6,8 @@ public class StateMove : State
 {
     float z;
     float x;
+    float moveSpeed = 5;
+    float rotateSpeed = 180;
 
     public override void Init()
     {
@@ -17,8 +19,8 @@ public class StateMove : State
 
     public override void UpdateState()
     {
-        x = pCtrl.x * pCtrl.rotateSpeed * Time.deltaTime;
-        z = pCtrl.z * pCtrl.moveSpeed * Time.deltaTime;
+        x = pCtrl.x * rotateSpeed * Time.deltaTime;
+        z = pCtrl.z * moveSpeed * Time.deltaTime;
 
         pCtrl.transform.Rotate(0, x, 0);
         pCtrl.transform.Translate(0, 0, z);

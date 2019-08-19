@@ -34,7 +34,12 @@ public class PlayerSkillUI : PlayerUI
         skillMgr = GameManager.Instance.player.GetComponent<SkillManager>();
     }
 
-    public SkillCoolTime GetObj(int count)
+    public Image GetImage(eSkillSlot eskill)
+    {
+        return skillUI[(int)eskill].skillIcon;
+    }
+
+    SkillCoolTime GetObj(int count)
     {
         return skillUI[count].coolTimeUI.GetComponent<SkillCoolTime>();
     }
