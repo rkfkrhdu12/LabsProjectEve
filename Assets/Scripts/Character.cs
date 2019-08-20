@@ -16,12 +16,29 @@ public class Character : MonoBehaviour
     public float maxHealth = 200;
     protected float regenHealth = 4;
 
-    protected float str = 100;
-
     public eDeadState eDeadState = eDeadState.NONE; 
 
     virtual public void GetDamage(float damage)
     {
         healthPoint -= damage;
+    }
+
+    private void LateUpdate()
+    {
+        if(healthPoint < 0)
+        {
+            
+        }
+    }
+
+    virtual public void UpdateDeath()
+    {
+
+    }
+
+    void Death()
+    {
+        GetComponent<Collider>().enabled = false;
+        eDeadState = eDeadState.DEAD;
     }
 }
