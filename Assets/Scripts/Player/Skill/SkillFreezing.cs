@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class SkillFreezing : Skill
 {
-    public override void Init(float cool)
+    public override void Init(SkillData skilldata)
     {
-        base.Init(cool);
+        base.Init(skilldata);
 
         ani = ePlayerAni.FREEZING;
     }
 
+    public override void ReadySkill()
+    {
+        base.ReadySkill();
+
+        pCtrl.isAttack = true;
+    }
     public override void UpdateSkill()
     {
         if (HitMob != null && !isEffect)
         {
             isEffect = true;
+
+            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
             HitMob.Freezing();
         }
 

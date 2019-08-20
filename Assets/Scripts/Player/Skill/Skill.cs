@@ -9,25 +9,27 @@ public class Skill
     protected Animator pAnimator;
 
     protected ePlayerAni ani;
+    protected SkillData skillData;
 
     public bool isCool;
     public bool isUI;
     protected bool isEffect;
 
     protected MonsterContorll HitMob;
-    protected float weaponDamage;
 
     protected float coolTime = 0.0f;
     protected float coolInterval = 1.0f;
 
-    public virtual void Init(float cool)
+    public virtual void Init(SkillData skilldata)
     {
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
         pAni = GameManager.Instance.player.GetComponent<PlayerAnimation>();
         pAnimator = pAni.GetComponent<Animator>();
 
+        skillData = skilldata;
+
         coolTime = 0.0f;
-        coolInterval = cool;
+        coolInterval = skillData.coolTime;
 
         isCool = false;
         isUI = false;
@@ -42,6 +44,8 @@ public class Skill
 
         isCool = true;
         isEffect = false;
+
+        HitMob = pCtrl.Mob;
 
         pCtrl.ChangeState(ePlayerState.SKILL);
         if (ePlayerAni.ATTACK <= ani)
@@ -62,12 +66,6 @@ public class Skill
     public bool IsCool()
     {
         return isCool;
-    }
-
-    public virtual void SetAttack(MonsterContorll mob,float weapondamage)
-    {
-        HitMob = mob;
-        weaponDamage = weapondamage;
     }
 
     public virtual void UpdateCoolTime()

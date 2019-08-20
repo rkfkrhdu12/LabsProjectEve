@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class SkillSwift : Skill
 {
-    public override void Init(float cool)
+    public override void Init(SkillData skilldata)
     {
-        base.Init(cool);
-        
+        base.Init(skilldata);
+
         ani = ePlayerAni.SWIFT;
+    }
+
+    public override void ReadySkill()
+    {
+        base.ReadySkill();
+
+        pCtrl.isAttack = true;
     }
 
     public override void UpdateSkill()
@@ -16,6 +23,8 @@ public class SkillSwift : Skill
         if (HitMob != null && !isEffect)
         {
             isEffect = true;
+
+            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
             pAni.SetSkillSwift(2, 5);
         }
 

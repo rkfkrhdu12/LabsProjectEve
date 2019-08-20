@@ -40,7 +40,7 @@ public class MonsterContorll : Character
     //    }
     //}
 
-    public enum CurrentState { idle, trace, attack, dead };
+    public enum CurrentState { idle, trace, attack,hit, dead };
     public CurrentState curState = CurrentState.idle;
 
     private Transform playerTransform;
@@ -86,6 +86,8 @@ public class MonsterContorll : Character
 
     void Update()
     {
+        UpdateDeath();
+
         UpdateChainDamage();
         UpdateParalysis();
     }
@@ -140,6 +142,9 @@ public class MonsterContorll : Character
                     transform.LookAt(playerTransform);
                     ChangeAnimation(key_IsAttack);
                     break;
+                case CurrentState.hit:
+                    ChangeAnimation(key_IsHit);
+                    break;
             }
             yield return null;
         }
@@ -173,14 +178,8 @@ public class MonsterContorll : Character
         switch (eDeadState)
         {
             case eDeadState.DEAD:
+                curState = CurrentState.dead;
                 ChangeAnimation(key_IsDeath);
-                break;
-            case eDeadState.NODAMAGE:
-
-                eDeadState = eDeadState.REVIVE;
-                break;
-            case eDeadState.REVIVE:
-                eDeadState = eDeadState.NONE;
                 break;
         }
     }
@@ -225,6 +224,7 @@ public class MonsterContorll : Character
     {
         isChainDamage = true;
         chainDamage = chaindamage;
+        chaning = 1.0f;
         chainDamageInterval = chaindamageinterval;
     }
 
@@ -249,12 +249,13 @@ public class MonsterContorll : Character
 
     public void Freezing()
     {
-        transform.Translate(0,0,-2f);
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0 ,-2f);
     }
 
     public override void GetDamage(float damage)
     {
-        ChangeAnimation(key_IsHit);
+        Debug.Log(1);
+        curState = CurrentState.hit;
 
         base.GetDamage(damage);
     }

@@ -8,21 +8,26 @@ public class PlayerWeapon : MonoBehaviour
 
     PlayerController pCtrl;
 
-    public void Start()
+    void Start()
     {
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (!pCtrl.isAttack) return;
+        if (pCtrl.weaponDamage != damage)
+            pCtrl.weaponDamage = damage;
+    }
 
-        pCtrl.isAttack = false;
-        if(other.gameObject.CompareTag(GameManager.Instance.monsterTag))
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag(GameManager.Instance.monsterTag))
         {
+            if (!pCtrl.isAttack) return;
+
+            pCtrl.isAttack = false;
             MonsterContorll mob = other.GetComponent<MonsterContorll>();
-            pCtrl.SetAttack(mob, damage);
-            mob.GetDamage(damage);
+            pCtrl.SetAttack(mob);
         }
     }
 }

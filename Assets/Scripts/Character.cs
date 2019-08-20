@@ -14,12 +14,13 @@ public class Character : MonoBehaviour
 {
     public float healthPoint = 200;
     public float maxHealth = 200;
-    protected float regenHealth = 4;
+    protected float regenHealth = 2;
 
     public eDeadState eDeadState = eDeadState.NONE; 
 
     virtual public void GetDamage(float damage)
     {
+        if(healthPoint <= 0) { eDeadState = eDeadState.DEAD; }
         healthPoint -= damage;
     }
 
@@ -27,7 +28,7 @@ public class Character : MonoBehaviour
     {
         if(healthPoint < 0)
         {
-            
+            eDeadState = eDeadState.DEAD;
         }
     }
 

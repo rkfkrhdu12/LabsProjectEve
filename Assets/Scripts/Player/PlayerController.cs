@@ -22,20 +22,22 @@ public class PlayerController : MonoBehaviour
     public float x;
 
     public eSkill skillCode;
-    MonsterContorll Mob;
+    public MonsterContorll Mob;
     public float weaponDamage;
 
     public bool isAttack;
+    public bool isDeath;
 
     private void Awake()
     {
         Init();
 
-        InitState();
     }
 
     private void Start()
     {
+        InitState();
+
         skillMgr.SetA(eSkill.FLAME);
         skillMgr.SetS(eSkill.SWIFT);
         skillMgr.SetD(eSkill.ELECTRON);
@@ -44,11 +46,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDeath) return;
+
         UpdateInputKey();
     }
 
     void FixedUpdate()
     {
+        if (isDeath) return;
+
         UpdateState();
     }
 
@@ -61,16 +67,14 @@ public class PlayerController : MonoBehaviour
         isAttack = false;
     }
 
-    public void SetAttack(MonsterContorll mob,float weapondamage)
+    public void SetAttack(MonsterContorll mob)
     {
         Mob = mob;
-        weaponDamage = weapondamage;
     }
 
     public void EndAttack()
     {
         Mob = null;
-        weaponDamage = 0;
     }
 
     // Input
@@ -88,9 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.X))
             {
-                skillCode = eSkill.DEFAULT_ATTACK;
-                curState = ePlayerState.SKILL;
-                isAttack = true;
+                skillMgr.Attack(Mob);
             }
 
             if (Input.GetKey(KeyCode.C))
@@ -102,26 +104,22 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKey(KeyCode.A))
             {
-                skillMgr.A(Mob,weaponDamage);
-                isAttack = true;
+                skillMgr.A();
             }
 
             if (Input.GetKey(KeyCode.S))
             {
-                skillMgr.S(Mob, weaponDamage);
-                isAttack = true;
+                skillMgr.S();
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                skillMgr.D(Mob, weaponDamage);
-                isAttack = true;
+                skillMgr.D();
             }
 
             if (Input.GetKey(KeyCode.F))
             {
-                skillMgr.F(Mob, weaponDamage);
-                isAttack = true;
+                skillMgr.F();
             }
         }
     }
@@ -171,10 +169,10 @@ public class PlayerController : MonoBehaviour
                 x -= 1;
             }
 
-            if (x != 0)  { z += .5f; }
+            if (x != 0) { z += .5f; }
             if (z < 0) { x *= -1; }
 
-            z = Mathf.Clamp(z, -.5f, 1);
+            z = Mathf.Clamp(z, -1f, 1);
             x = Mathf.Clamp(x, -1, 1);
 
             if (z != 0)
@@ -229,4 +227,5 @@ public class PlayerController : MonoBehaviour
         curState = state;
     }
     #endregion
+
 }

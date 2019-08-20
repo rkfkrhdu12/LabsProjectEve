@@ -96,7 +96,7 @@ public class SkillManager : MonoBehaviour
     {
         for (int i = (int)eSkill.DEFAULT_ATTACK; i < skill.Length; ++i)
         {
-            skill[i].Init(skillData[i].coolTime);
+            skill[i].Init(skillData[i]);
         }
 
         SetSlotUI(eSkillSlot.A);
@@ -115,28 +115,28 @@ public class SkillManager : MonoBehaviour
     #region PublicSkillFuc
 
     public void SetA(eSkill skill) { SetSkill(skill, eSkillSlot.A); }
-    public void A(MonsterContorll mob, float weapondamage)
+    public void A()
     {
 
-        ActiveSkill(eSkillSlot.A, mob, weapondamage);
+        ActiveSkill(eSkillSlot.A);
     }
 
     public void SetS(eSkill skill) { SetSkill(skill, eSkillSlot.S); }
-    public void S(MonsterContorll mob, float weapondamage)
+    public void S()
     {
-        ActiveSkill(eSkillSlot.S, mob, weapondamage);
+        ActiveSkill(eSkillSlot.S);
     }
 
     public void SetD(eSkill skill) { SetSkill(skill, eSkillSlot.D); }
-    public void D(MonsterContorll mob, float weapondamage)
+    public void D()
     {
-        ActiveSkill(eSkillSlot.D, mob, weapondamage);
+        ActiveSkill(eSkillSlot.D);
     }
 
     public void SetF(eSkill skill) { SetSkill(skill,eSkillSlot.F); }
-    public void F(MonsterContorll mob, float weapondamage)
+    public void F()
     {
-        ActiveSkill(eSkillSlot.F, mob, weapondamage);
+        ActiveSkill(eSkillSlot.F);
     }
     #endregion
 
@@ -163,11 +163,9 @@ public class SkillManager : MonoBehaviour
         pChar.energyPoint -= skillData[(int)slot[(int)eslot].skill].epPrice;
     }
 
-    void ActiveSkill(eSkillSlot eslot, MonsterContorll mob, float weapondamage)
+    void ActiveSkill(eSkillSlot eslot)
     {
         CheckActiveSkill(eslot);
-
-        Debug.Log("0");
 
         pCtrl.skillCode = slot[(int)eslot].skill;
         pCtrl.curState = ePlayerState.SKILL;
@@ -175,7 +173,12 @@ public class SkillManager : MonoBehaviour
         slot[(int)eslot].coolTimeUI.gameObject.SetActive(true);
 
         skill[(int)eslot + (int)eSkill.FLAME].isUI = true;
-        skill[(int)eslot + (int)eSkill.FLAME].SetAttack(mob, weapondamage);
+    }
+
+    public void Attack(MonsterContorll mob)
+    {
+        pCtrl.skillCode = eSkill.DEFAULT_ATTACK;
+        pCtrl.curState = ePlayerState.SKILL;
     }
 
     void UpdateSkillUI()

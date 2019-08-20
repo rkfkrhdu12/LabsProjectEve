@@ -14,10 +14,6 @@ public class StateManager : MonoBehaviour
         state[(int)ePlayerState.SKILL] = new StateSkill();
         state[(int)ePlayerState.UI] = new StateUI();
 
-        for (int i = (int)ePlayerState.MOVE; i < (int)ePlayerState.LAST; ++i)
-        {
-            state[i].Init();
-        }
     }
 
     public void Start()

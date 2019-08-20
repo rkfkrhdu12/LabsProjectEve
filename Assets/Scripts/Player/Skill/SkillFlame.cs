@@ -4,19 +4,28 @@ using UnityEngine;
 
 public class SkillFlame : Skill
 {
-    public override void Init(float cool)
+    public override void Init(SkillData skilldata)
     {
-        base.Init(cool);
+        base.Init(skilldata);
 
         ani = ePlayerAni.FLAME;
     }
 
+    public override void ReadySkill()
+    {
+        base.ReadySkill();
+
+        pCtrl.isAttack = true;
+    }
+
     public override void UpdateSkill()
     {
-        if (HitMob != null && !isEffect)
+        if (HitMob != null && !isEffect) 
         {
             isEffect = true;
-            HitMob.SetChainDamage(weaponDamage * .04f, 5);
+
+            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
+            HitMob.SetChainDamage(pCtrl.weaponDamage * .04f, 5);
         }
 
         if (pAni.curAni == ePlayerAni.IDLE)

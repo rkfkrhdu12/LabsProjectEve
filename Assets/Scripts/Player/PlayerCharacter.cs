@@ -11,16 +11,18 @@ public class PlayerCharacter : Character
 
     public float energyPoint = 100;
     public float maxEnergy = 100;
-    protected float regenEnergy = 4;
+    float regenEnergy = 4;
 
-    protected float regenTime = 0.0f;
-    protected float regenInterval = 1.0f;
+    float regenTime = 0.0f;
+    float regenInterval = 1.0f;
 
-    public PlayerController pCtrl;
+    PlayerController pCtrl;
+    PlayerAnimation pAni;
 
     private void Awake()
     {
-        pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
+        pCtrl = GetComponent<PlayerController>();
+        pAni = GetComponent<PlayerAnimation>();
     }
 
     public override void UpdateDeath()
@@ -28,6 +30,8 @@ public class PlayerCharacter : Character
         switch (eDeadState)
         {
             case eDeadState.DEAD:
+                pCtrl.isDeath = true;
+                pAni.ChangeAni(ePlayerAni.DEAD);
                 eDeadState = eDeadState.NODAMAGE;
                 break;
             case eDeadState.NODAMAGE:
@@ -39,9 +43,12 @@ public class PlayerCharacter : Character
                 }
                 break;
             case eDeadState.REVIVE:
-                eDeadState = eDeadState.NONE;
+                pCtrl.isDeath = false;
+                pAni.ChangeAni(ePlayerAni.IDLE);
                 healthPoint = maxHealth * reviveHealth;
                 energyPoint = maxEnergy * reviveEnergy;
+
+                eDeadState = eDeadState.NONE;
                 break;
         }
     }
@@ -49,6 +56,8 @@ public class PlayerCharacter : Character
     void Update()
     {
         UpdateDeath();
+
+        if (pCtrl.isDeath) return;
 
         regenTime += Time.deltaTime;
         if(regenTime > regenInterval)
