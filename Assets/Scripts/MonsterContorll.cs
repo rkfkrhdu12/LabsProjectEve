@@ -52,8 +52,6 @@ public class MonsterContorll : Character
 
     private bool isDead = false;
 
-    private float str = 10;
-
     bool isChainDamage = false;
     float chainDamage = 0.0f;
     float chainDamageTime = 0.0f;
@@ -78,9 +76,9 @@ public class MonsterContorll : Character
         StartCoroutine(CheckStateForAction());
         curAni = key_IsIdle;
 
-        //healthPoint = 100;
-        //maxHealth = healthPoint;
-        //str = 10;
+        healthPoint = 100;
+        maxHealth = healthPoint;
+        str = 10;
         isChainDamage = false;
     }
 
@@ -149,7 +147,6 @@ public class MonsterContorll : Character
     string key_IsTrace = "IsTrace";
     string key_IsAttack = "IsAttack";
     string key_IsHit = "IsHit";
-    string key_IsDeath = "IsDeath";
 
     string curAni = "IsTrace";
     void ChangeAnimation(string changeAni)
@@ -166,23 +163,6 @@ public class MonsterContorll : Character
     public float Str()
     {
         return str;
-    }
-
-    public override void UpdateDeath()
-    {
-        switch (eDeadState)
-        {
-            case eDeadState.DEAD:
-                ChangeAnimation(key_IsDeath);
-                break;
-            case eDeadState.NODAMAGE:
-
-                eDeadState = eDeadState.REVIVE;
-                break;
-            case eDeadState.REVIVE:
-                eDeadState = eDeadState.NONE;
-                break;
-        }
     }
 
     public bool isParalysis = false;

@@ -23,7 +23,7 @@ public class PlayerCharacter : Character
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
     }
 
-    public override void UpdateDeath()
+    void Update()
     {
         switch (eDeadState)
         {
@@ -32,8 +32,9 @@ public class PlayerCharacter : Character
                 break;
             case eDeadState.NODAMAGE:
                 noDamageTime += Time.deltaTime;
-                if (noDamageTime > noDamageInterval)
+                if(noDamageTime > noDamageInterval)
                 {
+                    noDamageTime = 0.0f;
 
                     eDeadState = eDeadState.REVIVE;
                 }
@@ -44,11 +45,6 @@ public class PlayerCharacter : Character
                 energyPoint = maxEnergy * reviveEnergy;
                 break;
         }
-    }
-
-    void Update()
-    {
-        UpdateDeath();
 
         regenTime += Time.deltaTime;
         if(regenTime > regenInterval)
@@ -79,22 +75,5 @@ public class PlayerCharacter : Character
         }
 
         return -1;
-    }
-
-    float attackCoolTime = 1.0f;
-    float attackInterval = 1.0f;
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
-        {
-            attackCoolTime += Time.deltaTime;
-            if (attackCoolTime > attackInterval)
-            {
-                attackCoolTime = 0;
-
-                GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
-            }
-        }
     }
 }
