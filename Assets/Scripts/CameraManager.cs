@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     Transform player;
-    
+
     [SerializeField] float moveSpeed = 7;
 
     private void Start()
@@ -19,26 +19,14 @@ public class CameraManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isCol)
-        {
-            transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed * 2 * Time.deltaTime);
-        }
+        transform.position = Vector3.Lerp(transform.position, player.position, moveSpeed * 2 * Time.deltaTime);
     }
 
-    private void OnCollisionEnter(Collision other)
+    void OntriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if(other.gameObject.CompareTag("Wall"))
         {
-            isCol = true;
+            Debug.Log(1);
         }
     }
-
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            isCol = false;
-        }
-    }
-
 }
