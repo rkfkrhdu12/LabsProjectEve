@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     SkillManager skillMgr;
 
     public float z;
+    public float y;
     public float x;
 
     public eSkill skillCode;
@@ -143,6 +144,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool isJump = false;
+
     void UpdateInputMove()
     {
         z = 0;
@@ -184,6 +187,16 @@ public class PlayerController : MonoBehaviour
             {
                 curState = ePlayerState.NONE;
                 pAni.ChangeAni(ePlayerAni.IDLE);
+            }
+            
+            if (!isJump)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    isJump = true;
+                    y = 1;
+                    curState = ePlayerState.MOVE;
+                }
             }
         }
     }

@@ -93,6 +93,9 @@ public class PlayerCharacter : Character
     float attackCoolTime = 1.0f;
     float attackInterval = 1.0f;
 
+    float jumperrorTime = 0.0f;
+    float jumperrorInterval = 0.15f;
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
@@ -104,6 +107,28 @@ public class PlayerCharacter : Character
 
                 GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
             }
+        }
+
+        if (pCtrl.isJump)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                jumperrorTime += Time.deltaTime;
+                if (jumperrorTime > jumperrorInterval)
+                {
+                    jumperrorTime = 0;
+
+                    pCtrl.isJump = false;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            pCtrl.isJump = false;
         }
     }
 }

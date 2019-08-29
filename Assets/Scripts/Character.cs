@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     virtual public void GetDamage(float damage)
     {
         if(healthPoint <= 0) { eDeadState = eDeadState.DEAD; }
+
         healthPoint -= damage;
     }
 
