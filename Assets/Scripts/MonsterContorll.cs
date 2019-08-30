@@ -40,7 +40,7 @@ public class MonsterContorll : Character
     //    }
     //}
 
-    public enum CurrentState { idle, trace, attack,hit, dead };
+    public enum CurrentState { idle, trace, attack, hit, dead };
     public CurrentState curState = CurrentState.idle;
 
     private Transform playerTransform;
@@ -153,6 +153,7 @@ public class MonsterContorll : Character
     string key_IsIdle = "IsIdle";
     string key_IsTrace = "IsTrace";
     string key_IsAttack = "IsAttack";
+    string key_IsJumping = "IsJump";
     string key_IsHit = "IsHit";
     string key_IsDeath = "IsDeath";
 
