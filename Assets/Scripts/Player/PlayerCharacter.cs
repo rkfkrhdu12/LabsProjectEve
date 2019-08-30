@@ -38,6 +38,7 @@ public class PlayerCharacter : Character
                 noDamageTime += Time.deltaTime;
                 if (noDamageTime > noDamageInterval)
                 {
+                    noDamageTime = 0.0f;
 
                     eDeadState = eDeadState.REVIVE;
                 }

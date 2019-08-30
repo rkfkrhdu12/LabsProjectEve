@@ -26,7 +26,7 @@ public class PlayerAnimation : MonoBehaviour
     private const string key_isRun = "IsRun";
     private const string key_isJump = "IsJump";
     private const string key_isDamage = "IsDamage";
-    private const string key_isDead = "IsDead";
+    private const string key_isDeath = "IsDeath";
     private const string key_isIdle = "IsIdle";
     private const string key_isAttack = "IsAttack";
     private const string key_isAttack1 = "IsSkill1";
@@ -96,7 +96,7 @@ public class PlayerAnimation : MonoBehaviour
                     curAniKey = key_isDamage;
                     break;
                 case ePlayerAni.DEAD:
-                    curAniKey = key_isDead;
+                    curAniKey = key_isDeath;
                     break;
                 case ePlayerAni.ATTACK:
                     curAniKey = key_isAttack;

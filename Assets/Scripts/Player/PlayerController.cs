@@ -81,14 +81,22 @@ public class PlayerController : MonoBehaviour
     #region Input
     void UpdateInputKey()
     {
+        z = 0;
+        x = 0;
+
         UpdateInputAttack();
+
+        if (curState == ePlayerState.SKILL) return;
+
         UpdateInputUI();
         UpdateInputMove();
     }
 
     void UpdateInputAttack()
     {
-        if (curState != ePlayerState.SKILL && pAni.curAni < ePlayerAni.ATTACK)
+        if (curState == ePlayerState.SKILL) return;
+
+        if (pAni.curAni < ePlayerAni.ATTACK)
         {
             if (Input.GetKey(KeyCode.X))
             {
@@ -126,20 +134,17 @@ public class PlayerController : MonoBehaviour
 
     void UpdateInputUI()
     {
-        if (curState != ePlayerState.SKILL)
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            if (uiMgr.isInventory)
             {
-                if (uiMgr.isInventory)
-                {
-                    curState = ePlayerState.NONE;
-                    uiMgr.OffInventory();
-                }
-                else
-                {
-                    curState = ePlayerState.UI;
-                    uiMgr.OnInventory();
-                }
+                curState = ePlayerState.NONE;
+                uiMgr.OffInventory();
+            }
+            else
+            {
+                curState = ePlayerState.UI;
+                uiMgr.OnInventory();
             }
         }
     }
@@ -148,55 +153,51 @@ public class PlayerController : MonoBehaviour
 
     void UpdateInputMove()
     {
-        z = 0;
-        x = 0;
+        if (curState == ePlayerState.UI) return;
 
-        if (curState != ePlayerState.SKILL && curState != ePlayerState.UI)
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                z += 1;
-            }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                z -= 1f;
-            }
+            z += 1;
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            z -= 1f;
+        }
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                x += 1;
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                x -= 1;
-            }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            x += 1;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            x -= 1;
+        }
 
-            if (x != 0) { z += .5f; }
-            if (z < 0) { x *= -1; }
+        if (x != 0) { z += .5f; }
+        if (z < 0) { x *= -1; }
 
-            z = Mathf.Clamp(z, -1f, 1);
-            x = Mathf.Clamp(x, -1, 1);
+        z = Mathf.Clamp(z, -1f, 1);
+        x = Mathf.Clamp(x, -1, 1);
 
-            if (z != 0)
+        if (z != 0)
+        {
+            curState = ePlayerState.MOVE;
+
+            pAni.ChangeAni(ePlayerAni.RUN);
+        }
+        else
+        {
+            curState = ePlayerState.NONE;
+            pAni.ChangeAni(ePlayerAni.IDLE);
+        }
+
+        if (!isJump)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
             {
+                isJump = true;
+                y = 1;
                 curState = ePlayerState.MOVE;
-
-                pAni.ChangeAni(ePlayerAni.RUN);
-            }
-            else
-            {
-                curState = ePlayerState.NONE;
-                pAni.ChangeAni(ePlayerAni.IDLE);
-            }
-            
-            if (!isJump)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    isJump = true;
-                    y = 1;
-                    curState = ePlayerState.MOVE;
-                }
             }
         }
     }

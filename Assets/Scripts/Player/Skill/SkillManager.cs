@@ -154,18 +154,13 @@ public class SkillManager : MonoBehaviour
         pSkillUI.slotSkill[(int)eslot] = eskill;
     }
 
-    void CheckActiveSkill(eSkillSlot eslot)
+    void ActiveSkill(eSkillSlot eslot)
     {
         if (skillData[(int)slot[(int)eslot].skill].epPrice > pChar.energyPoint) return;
         if (skill[(int)slot[(int)eslot].skill].isCool) return;
         if (slot[(int)eslot].skill == eSkill.NONE) return;
 
         pChar.energyPoint -= skillData[(int)slot[(int)eslot].skill].epPrice;
-    }
-
-    void ActiveSkill(eSkillSlot eslot)
-    {
-        CheckActiveSkill(eslot);
 
         pCtrl.skillCode = slot[(int)eslot].skill;
         pCtrl.curState = ePlayerState.SKILL;
