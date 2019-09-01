@@ -39,4 +39,8 @@ public class GameManager : MonoBehaviour
     public string monsterTag = "Monster";
     public string playerTag = "Player";
 
+    public int dataChip = 0;
+
+    public float itemHealthHealing = 20;
+    public float itemEnergyHealing = 10;
 }

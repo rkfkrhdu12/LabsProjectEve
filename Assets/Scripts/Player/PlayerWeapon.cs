@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
-    public float damage = 10;
+    public float damage = 100;
 
     PlayerController pCtrl;
 

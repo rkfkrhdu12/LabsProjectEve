@@ -19,8 +19,8 @@ public class Character : MonoBehaviour
     public eDeadState eDeadState = eDeadState.NONE; 
 
     virtual public void GetDamage(float damage)
-    {
-        if(healthPoint <= 0 && eDeadState < eDeadState.DEAD) { eDeadState = eDeadState.DEAD; }
+    { 
+        if (healthPoint <= 0 && eDeadState < eDeadState.DEAD) { Death(); }
 
         healthPoint -= damage;
     }
@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
     {
         if (healthPoint <= 0 && eDeadState < eDeadState.DEAD)
         {
-            eDeadState = eDeadState.DEAD;
+            Death();
         }
     }
 
@@ -40,7 +40,8 @@ public class Character : MonoBehaviour
 
     void Death()
     {
-        GetComponent<Collider>().enabled = false;
+        if (eDeadState != eDeadState.NONE) return;
+
         eDeadState = eDeadState.DEAD;
     }
 }

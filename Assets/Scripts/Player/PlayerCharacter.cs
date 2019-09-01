@@ -21,9 +21,12 @@ public class PlayerCharacter : Character
 
     private void Awake()
     {
+
         pCtrl = GetComponent<PlayerController>();
         pAni = GetComponent<PlayerAnimation>();
     }
+
+    public Transform revivePoint;
 
     public override void UpdateDeath()
     {
@@ -36,6 +39,7 @@ public class PlayerCharacter : Character
                 break;
             case eDeadState.NODAMAGE:
                 noDamageTime += Time.deltaTime;
+                pAni.ChangeAni(ePlayerAni.DEAD);
                 if (noDamageTime > noDamageInterval)
                 {
                     noDamageTime = 0.0f;
@@ -44,6 +48,7 @@ public class PlayerCharacter : Character
                 }
                 break;
             case eDeadState.REVIVE:
+                gameObject.transform.position = revivePoint.position;
                 pCtrl.isDeath = false;
                 pAni.ChangeAni(ePlayerAni.IDLE);
                 healthPoint = maxHealth * reviveHealth;
@@ -59,6 +64,12 @@ public class PlayerCharacter : Character
         UpdateDeath();
 
         if (pCtrl.isDeath) return;
+
+        attackCoolTime += Time.deltaTime;
+        if(attackCoolTime >= attackInterval)
+        {
+            isDamaged = true;
+        }
 
         regenTime += Time.deltaTime;
         if(regenTime > regenInterval)
@@ -93,23 +104,21 @@ public class PlayerCharacter : Character
 
     float attackCoolTime = 1.0f;
     float attackInterval = 1.0f;
+    bool isDamaged = false;
 
     float jumperrorTime = 0.0f;
     float jumperrorInterval = 0.15f;
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider collision)
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.monsterTag))
         {
-            attackCoolTime += Time.deltaTime;
-            if (attackCoolTime > attackInterval)
-            {
-                attackCoolTime = 0;
-
-                GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
-            }
+            GetDamage(collision.gameObject.GetComponent<MonsterContorll>().Str());
         }
+    }
 
+    private void OnCollisionStay(Collision collision)
+    {
         if (pCtrl.isJump)
         {
             if (collision.gameObject.CompareTag("Ground"))

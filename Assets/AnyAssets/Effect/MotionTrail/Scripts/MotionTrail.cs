@@ -72,6 +72,7 @@ public class MotionTrail : MonoBehaviour {
                     break;
                 }
             }
+
             if(NeedObject == false)
             {
                 Debug.Log("<color=red>" + "Ghost 오브젝트가 부족합니다." + "</color>" + "\n 해결방법1 : Export Speed Delay를 올려주세요. \n 해결방법2 : Value Time Delay를 내려주세요. \n 해결방법3 : Value Detail을 올려주세요. \n 해결방법4 : Ghost를 더 복제 해주세요.");
@@ -86,6 +87,5 @@ public class MotionTrail : MonoBehaviour {
         StopAllCoroutines();
         yield return null;
     }
-
 
 }

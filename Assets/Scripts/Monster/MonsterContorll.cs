@@ -43,7 +43,7 @@ public class MonsterContorll : Character
     public enum CurrentState { idle, trace, attack, hit, dead };
     public CurrentState curState = CurrentState.idle;
 
-    private Transform playerTransform;
+    protected Transform playerTransform;
     public NavMeshAgent nvAgent;
     private Animator _animator;
 
@@ -52,7 +52,7 @@ public class MonsterContorll : Character
 
     private bool isDead = false;
 
-    private float str = 10;
+    protected float str = 10;
 
     bool isChainDamage = false;
     float chainDamage = 0.0f;
@@ -78,20 +78,30 @@ public class MonsterContorll : Character
         StartCoroutine(CheckStateForAction());
         curAni = key_IsIdle;
 
-        //healthPoint = 100;
-        //maxHealth = healthPoint;
-        //str = 10;
         isChainDamage = false;
+
+        Init();
     }
 
     void Update()
     {
         UpdateDeath();
 
+        UpdateAttack();
+
         UpdateChainDamage();
         UpdateParalysis();
     }
 
+    virtual protected void Init()
+    {
+
+    }
+
+    virtual protected void UpdateAttack()
+    {
+
+    }
 
     IEnumerator CheckState()
     {
@@ -127,20 +137,10 @@ public class MonsterContorll : Character
                     nvAgent.isStopped = true;
                     break;
                 case CurrentState.trace:
-                    if (!isParalysis)
-                    {
-                        nvAgent.destination = playerTransform.position;
-                        nvAgent.isStopped = false;
-                        ChangeAnimation(key_IsTrace);
-                    }
-                    else
-                    {
-                        ParalysisEffect();
-                    }
+                    UpdateTraceAction();
                     break;
                 case CurrentState.attack:
-                    transform.LookAt(playerTransform);
-                    ChangeAnimation(key_IsAttack);
+                    UpdateAttackAction();
                     break;
                 case CurrentState.hit:
                     ChangeAnimation(key_IsHit);
@@ -150,15 +150,36 @@ public class MonsterContorll : Character
         }
     }
 
+    virtual protected void UpdateTraceAction()
+    {
+        if (!isParalysis)
+        {
+            nvAgent.destination = playerTransform.position;
+            nvAgent.isStopped = false;
+            ChangeAnimation(key_IsTrace);
+        }
+        else
+        {
+            ParalysisEffect();
+        }
+    }
+
+    virtual protected void UpdateAttackAction()
+    {
+        Vector3 targetPos = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
+
+        transform.LookAt(targetPos);
+        ChangeAnimation(key_IsAttack);
+    }
+
     string key_IsIdle = "IsIdle";
-    string key_IsTrace = "IsTrace";
-    string key_IsAttack = "IsAttack";
-    string key_IsJumping = "IsJump";
+    protected string key_IsTrace = "IsTrace";
+    protected string key_IsAttack = "IsAttack";
     string key_IsHit = "IsHit";
     string key_IsDeath = "IsDeath";
 
     string curAni = "IsTrace";
-    void ChangeAnimation(string changeAni)
+    protected void ChangeAnimation(string changeAni)
     {
         _animator.SetBool(curAni, false);
         if (changeAni != key_IsIdle)
@@ -169,9 +190,20 @@ public class MonsterContorll : Character
     }
 
     /// 
+
+
     virtual public float Str()
     {
+        if (!isAttackDamage) return 0;
+
+        isAttackDamage = false;
         return str;
+    }
+
+    public bool isAttackDamage = false;
+    public void Attack()
+    {
+        isAttackDamage = true;
     }
 
     float deadTime = 0.0f;

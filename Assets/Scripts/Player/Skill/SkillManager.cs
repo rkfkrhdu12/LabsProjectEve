@@ -36,7 +36,7 @@ public class SkillManager : MonoBehaviour
 {
     public PlayerController pCtrl;
     PlayerCharacter pChar;
-    public PlayerSkillUI pSkillUI;
+    public UISkill pSkillUI;
     UIManager uiMgr;
 
     public Skill[] skill = new Skill[(int)eSkill.LAST];
@@ -148,7 +148,7 @@ public class SkillManager : MonoBehaviour
     void SetSkill(eSkill eskill, eSkillSlot eslot)
     {
         slot[(int)eslot].skill = eskill;
-        PlayerSkillUI pSkillUI = uiMgr.GetPlayerSkillUI();
+        UISkill pSkillUI = uiMgr.GetPlayerSkillUI();
 
         pSkillUI.GetImage(eslot).sprite = skillImage[(int)eslot];
         pSkillUI.slotSkill[(int)eslot] = eskill;

@@ -4,22 +4,39 @@ using UnityEngine;
 
 public class BoomMonster : MonsterContorll
 {
-    public override float Str()
-    {
-        
+    bool isDamaged = false;
 
-        return base.Str();
+    protected override void Init()
+    {
+        isDamaged = false;
+        healthPoint = 100;
+        maxHealth = healthPoint;
+        str = 50;
     }
 
-    bool isColPlayer = false;
+    public override float Str()
+    {
+        float dmg = base.Str();
+        if (str != 0)
+        {
+            isDamaged = true;
+        }
+        return dmg;
+    }
 
-
+    protected override void UpdateAttack()
+    {
+        if (isDamaged)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag(GameManager.Instance.playerTag))
+        if (other.gameObject.CompareTag(GameManager.Instance.playerTag))
         {
-
+            isAttackDamage = true;
         }
     }
 }

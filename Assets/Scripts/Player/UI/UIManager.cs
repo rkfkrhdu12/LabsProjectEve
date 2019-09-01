@@ -7,6 +7,7 @@ public enum eUI
     HEALTH,
     ENERGY,
     SKILL,
+    DATACHIP,
     INVENTORY,
     LAST,
 }
@@ -16,20 +17,23 @@ public class UIManager : MonoBehaviour
     public GameObject playerUIObj;
 
     GameObject[] uiObj = new GameObject[(int)eUI.LAST];
-    public PlayerUI[] pUI = new PlayerUI[(int)eUI.LAST];
+    public UI[] pUI = new UI[(int)eUI.LAST];
 
     void Awake()
     {
-        StartUI((int)eUI.HEALTH, new PlayerHealthUI(), true);
+        StartUI((int)eUI.HEALTH, new UIHealth(), true);
 
-        StartUI((int)eUI.ENERGY, new PlayerEnergyUI(), true);
+        StartUI((int)eUI.ENERGY, new UIEnergy(), true);
 
-        StartUI((int)eUI.SKILL, new PlayerSkillUI(), true);
+        StartUI((int)eUI.SKILL, new UISkill(), true);
 
-        StartUI((int)eUI.INVENTORY, new PlayerInventoryUI(), false);
+        StartUI((int)eUI.DATACHIP, new UIDataChip(), true);
+
+        StartUI((int)eUI.INVENTORY, new UIInventory(), false);
+
     }
 
-    void StartUI(int nui,PlayerUI pui, bool isactive)
+    void StartUI(int nui,UI pui, bool isactive)
     {
         pUI[nui] = pui;
         uiObj[nui] = playerUIObj.transform.GetChild(nui).gameObject;
@@ -79,13 +83,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public PlayerSkillUI GetPlayerSkillUI()
+    public UISkill GetPlayerSkillUI()
     {
-        return (PlayerSkillUI)pUI[(int)eUI.SKILL];
+        return (UISkill)pUI[(int)eUI.SKILL];
     }
 
     public SkillCoolTime GetSkillCoolTime(eSkillSlot eskill)
     {
-        return ((PlayerSkillUI)pUI[(int)eUI.SKILL]).GetSkillCoolTime(eskill);
+        return ((UISkill)pUI[(int)eUI.SKILL]).GetSkillCoolTime(eskill);
     }
 }
