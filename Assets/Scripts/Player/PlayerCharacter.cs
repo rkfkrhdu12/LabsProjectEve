@@ -49,6 +49,8 @@ public class PlayerCharacter : Character
                 break;
             case eDeadState.REVIVE:
                 gameObject.transform.position = revivePoint.position;
+                gameObject.transform.rotation = revivePoint.rotation;
+                Camera.main.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                 pCtrl.isDeath = false;
                 pAni.ChangeAni(ePlayerAni.IDLE);
                 healthPoint = maxHealth * reviveHealth;
@@ -66,13 +68,13 @@ public class PlayerCharacter : Character
         if (pCtrl.isDeath) return;
 
         attackCoolTime += Time.deltaTime;
-        if(attackCoolTime >= attackInterval)
+        if (attackCoolTime >= attackInterval)
         {
             isDamaged = true;
         }
 
         regenTime += Time.deltaTime;
-        if(regenTime > regenInterval)
+        if (regenTime > regenInterval)
         {
             regenTime = 0.0f;
 
@@ -136,7 +138,7 @@ public class PlayerCharacter : Character
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             pCtrl.isJump = false;
         }
