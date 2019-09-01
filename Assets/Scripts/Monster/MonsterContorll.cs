@@ -209,6 +209,8 @@ public class MonsterContorll : Character
     float deadTime = 0.0f;
     float deadInvertal = .8f;
 
+    bool isDeath = false;
+
     public override void UpdateDeath()
     {
         switch (eDeadState)
@@ -222,6 +224,7 @@ public class MonsterContorll : Character
             case eDeadState.DEAD:
                 curState = CurrentState.dead;
 
+                isDead = true;
                 ChangeAnimation(key_IsDeath);
 
                 deadTime += Time.deltaTime;
@@ -231,7 +234,10 @@ public class MonsterContorll : Character
                 }
                 break;
             case eDeadState.NODAMAGE:
-                gameObject.SetActive(false);
+                if(isDeath)
+                {
+                    gameObject.SetActive(false);
+                }
                 break;
         }
     }
@@ -309,5 +315,10 @@ public class MonsterContorll : Character
         curState = CurrentState.hit;
 
         base.GetDamage(damage);
+    }
+
+    public void OnDeath()
+    {
+        isDeath = true;
     }
 }
