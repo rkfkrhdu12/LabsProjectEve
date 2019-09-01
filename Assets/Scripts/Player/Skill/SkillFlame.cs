@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillFlame : Skill
 {
+
     public override void Init(SkillData skilldata)
     {
         base.Init(skilldata);
@@ -24,7 +25,7 @@ public class SkillFlame : Skill
         {
             isEffect = true;
 
-            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
+            HitMob.GetDamage(pCtrl.weaponDamage * data.damage);
             HitMob.SetChainDamage(pCtrl.weaponDamage * .04f, 5);
         }
 

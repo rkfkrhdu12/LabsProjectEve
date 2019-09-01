@@ -12,7 +12,7 @@ public class SkillDefaultAttack : Skill
     public override void ReadySkill()
     {
         base.ReadySkill();
-        
+
         pCtrl.isAttack = true;
     }
 
@@ -22,7 +22,7 @@ public class SkillDefaultAttack : Skill
         {
             isEffect = true;
 
-            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
+            HitMob.GetDamage(pCtrl.weaponDamage * data.damage);
         }
 
         if (pAni.curAni == ePlayerAni.IDLE)

@@ -24,7 +24,7 @@ public class SkillSwift : Skill
         {
             isEffect = true;
 
-            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
+            HitMob.GetDamage(pCtrl.weaponDamage * data.damage);
             pAni.SetSkillSwift(2, 5);
         }
 

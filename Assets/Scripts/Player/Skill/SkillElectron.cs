@@ -24,7 +24,7 @@ public class SkillElectron : Skill
         {
             isEffect = true;
 
-            HitMob.GetDamage(pCtrl.weaponDamage * skillData.damage);
+            HitMob.GetDamage(pCtrl.weaponDamage * data.damage);
             HitMob.SetParalysis(2);
         }
 

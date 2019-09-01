@@ -8,6 +8,7 @@ public struct SkillData
     public float coolTime;
     public float epPrice;
     public float damage;
+    public Color color;
 }
 
 public struct SkillSlot
@@ -29,48 +30,56 @@ public enum eSkill
 
 public enum eSkillSlot
 {
-    A,S,D,F,
+    A, S, D, F,
 }
 
 public class SkillManager : MonoBehaviour
 {
     public PlayerController pCtrl;
     PlayerCharacter pChar;
-    public UISkill pSkillUI;
+    public UISkill pUISkill;
     UIManager uiMgr;
 
-    public Skill[] skill = new Skill[(int)eSkill.LAST];
-    public SkillData[] skillData = new SkillData[(int)eSkill.LAST];
-    SkillSlot[] slot = new SkillSlot[(int)eSkill.LAST -(int)eSkill.FLAME];
+    public Skill[] skills = new Skill[(int)eSkill.LAST];
+    public SkillData[] data = new SkillData[(int)eSkill.LAST];
+    SkillSlot[] slot = new SkillSlot[(int)eSkill.LAST - (int)eSkill.FLAME];
 
-    public Sprite[] skillImage = new Sprite[(int)eSkill.LAST - (int)eSkill.FLAME];
+    public Sprite[] image = new Sprite[(int)eSkill.LAST - (int)eSkill.FLAME];
+
+    public GameObject effectObj;
 
     void InitData()
     {
-        skillData[(int)eSkill.DEFAULT_ATTACK].coolTime = .7f;
-        skillData[(int)eSkill.DEFAULT_ATTACK].epPrice = 0;
-        skillData[(int)eSkill.DEFAULT_ATTACK].damage = 1;
+        data[(int)eSkill.DEFAULT_ATTACK].coolTime = .7f;
+        data[(int)eSkill.DEFAULT_ATTACK].epPrice = 0;
+        data[(int)eSkill.DEFAULT_ATTACK].damage = 1;
+        data[(int)eSkill.DEFAULT_ATTACK].color = new Color(83f / 255f, 167f / 255f, 1);
 
-        skillData[(int)eSkill.SHIFT].coolTime = 2f;
-        skillData[(int)eSkill.SHIFT].epPrice = 0;
+        data[(int)eSkill.SHIFT].coolTime = 2f;
+        data[(int)eSkill.SHIFT].epPrice = 0;
+        data[(int)eSkill.DEFAULT_ATTACK].color = new Color(1, 1, 1);
 
         // Skill
 
-        skillData[(int)eSkill.FLAME].coolTime = 12f;
-        skillData[(int)eSkill.FLAME].epPrice = 30;
-        skillData[(int)eSkill.FLAME].damage = 1.2f;
+        data[(int)eSkill.FLAME].coolTime = 12f;
+        data[(int)eSkill.FLAME].epPrice = 30;
+        data[(int)eSkill.FLAME].damage = 1.2f;
+        data[(int)eSkill.FLAME].color = Color.red; //new Color(1, 137f / 255f, 76f / 255f);
 
-        skillData[(int)eSkill.SWIFT].coolTime = 15f;
-        skillData[(int)eSkill.SWIFT].epPrice = 40;
-        skillData[(int)eSkill.SWIFT].damage = 1.4f;
+        data[(int)eSkill.SWIFT].coolTime = 15f;
+        data[(int)eSkill.SWIFT].epPrice = 40;
+        data[(int)eSkill.SWIFT].damage = 1.4f;
+        data[(int)eSkill.SWIFT].color = Color.green;//new Color(76f / 255f, 1, 183f / 255f);
 
-        skillData[(int)eSkill.ELECTRON].coolTime = 10;
-        skillData[(int)eSkill.ELECTRON].epPrice = 40;
-        skillData[(int)eSkill.ELECTRON].damage = 1.1f;
+        data[(int)eSkill.ELECTRON].coolTime = 10;
+        data[(int)eSkill.ELECTRON].epPrice = 40;
+        data[(int)eSkill.ELECTRON].damage = 1.1f;
+        data[(int)eSkill.ELECTRON].color = Color.magenta; //new Color(217f / 255f, 76f / 255f, 1);
 
-        skillData[(int)eSkill.FREEZING].coolTime = 18;
-        skillData[(int)eSkill.FREEZING].epPrice = 20;
-        skillData[(int)eSkill.FREEZING].damage = 1.3f;
+        data[(int)eSkill.FREEZING].coolTime = 18;
+        data[(int)eSkill.FREEZING].epPrice = 20;
+        data[(int)eSkill.FREEZING].damage = 1.3f;
+        data[(int)eSkill.FREEZING].color = new Color(0, 1, 1);
     }
 
     public void Awake()
@@ -81,22 +90,24 @@ public class SkillManager : MonoBehaviour
         pCtrl = GetComponent<PlayerController>();
         pChar = GetComponent<PlayerCharacter>();
 
-        skill = new Skill[(int)eSkill.LAST];
+        skills = new Skill[(int)eSkill.LAST];
 
-        skill[(int)eSkill.NONE] = null;
-        skill[(int)eSkill.DEFAULT_ATTACK] = new SkillDefaultAttack();
-        skill[(int)eSkill.SHIFT] = new SkillShift();
-        skill[(int)eSkill.FLAME] = new SkillFlame();
-        skill[(int)eSkill.SWIFT] = new SkillSwift();
-        skill[(int)eSkill.ELECTRON] = new SkillElectron();
-        skill[(int)eSkill.FREEZING] = new SkillFreezing();
+        skills[(int)eSkill.NONE] = null;
+        skills[(int)eSkill.DEFAULT_ATTACK] = new SkillDefaultAttack();
+        skills[(int)eSkill.SHIFT] = new SkillShift();
+        skills[(int)eSkill.FLAME] = new SkillFlame();
+        skills[(int)eSkill.SWIFT] = new SkillSwift();
+        skills[(int)eSkill.ELECTRON] = new SkillElectron();
+        skills[(int)eSkill.FREEZING] = new SkillFreezing();
+
+        effectObj.SetActive(false);
     }
 
     public void Start()
     {
-        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skill.Length; ++i)
+        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skills.Length; ++i)
         {
-            skill[i].Init(skillData[i]);
+            skills[i].Init(data[i]);
         }
 
         SetSlotUI(eSkillSlot.A);
@@ -117,7 +128,6 @@ public class SkillManager : MonoBehaviour
     public void SetA(eSkill skill) { SetSkill(skill, eSkillSlot.A); }
     public void A()
     {
-
         ActiveSkill(eSkillSlot.A);
     }
 
@@ -133,7 +143,7 @@ public class SkillManager : MonoBehaviour
         ActiveSkill(eSkillSlot.D);
     }
 
-    public void SetF(eSkill skill) { SetSkill(skill,eSkillSlot.F); }
+    public void SetF(eSkill skill) { SetSkill(skill, eSkillSlot.F); }
     public void F()
     {
         ActiveSkill(eSkillSlot.F);
@@ -150,24 +160,25 @@ public class SkillManager : MonoBehaviour
         slot[(int)eslot].skill = eskill;
         UISkill pSkillUI = uiMgr.GetPlayerSkillUI();
 
-        pSkillUI.GetImage(eslot).sprite = skillImage[(int)eslot];
+        pSkillUI.GetImage(eslot).sprite = image[(int)eslot];
         pSkillUI.slotSkill[(int)eslot] = eskill;
     }
 
     void ActiveSkill(eSkillSlot eslot)
     {
-        if (skillData[(int)slot[(int)eslot].skill].epPrice > pChar.energyPoint) return;
-        if (skill[(int)slot[(int)eslot].skill].isCool) return;
+        if (data[(int)slot[(int)eslot].skill].epPrice > pChar.energyPoint) return;
+        if (skills[(int)slot[(int)eslot].skill].isCool) return;
         if (slot[(int)eslot].skill == eSkill.NONE) return;
 
-        pChar.energyPoint -= skillData[(int)slot[(int)eslot].skill].epPrice;
+        pChar.energyPoint -= data[(int)slot[(int)eslot].skill].epPrice;
 
         pCtrl.skillCode = slot[(int)eslot].skill;
         pCtrl.curState = ePlayerState.SKILL;
 
+        eslotValue = (int)eslot;
         slot[(int)eslot].coolTimeUI.gameObject.SetActive(true);
 
-        skill[(int)eslot + (int)eSkill.FLAME].isUI = true;
+        skills[(int)eslot + (int)eSkill.FLAME].isUI = true;
     }
 
     public void Attack(MonsterContorll mob)
@@ -180,9 +191,9 @@ public class SkillManager : MonoBehaviour
     {
         for (int i = 0; i < slot.Length; ++i)
         {
-            if (!skill[i + (int)eSkill.FLAME].isCool && skill[i + (int)eSkill.FLAME].isUI)
+            if (!skills[i + (int)eSkill.FLAME].isCool && skills[i + (int)eSkill.FLAME].isUI)
             {
-                skill[i + (int)eSkill.FLAME].isUI = false;
+                skills[i + (int)eSkill.FLAME].isUI = false;
                 slot[i].coolTimeUI.gameObject.SetActive(false);
             }
         }
@@ -190,11 +201,22 @@ public class SkillManager : MonoBehaviour
 
     void UpdateCoolTime()
     {
-        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skill.Length; ++i)
+        for (int i = (int)eSkill.DEFAULT_ATTACK; i < skills.Length; ++i)
         {
-            skill[i].UpdateCoolTime();
+            skills[i].UpdateCoolTime();
             if (i > 2)
-                slot[i - 3].coolTimeUI.GetRemainTime(skill[i].GetRemainTime());
+                slot[i - 3].coolTimeUI.GetRemainTime(skills[i].GetRemainTime());
         }
+    }
+    int eslotValue = 0;
+    public void OnEffect()
+    {
+        effectObj.SetActive(true);
+        effectObj.GetComponent<MeshRenderer>().sharedMaterial.color = data[(int)slot[eslotValue].skill].color;
+    }
+
+    public void OffEffect()
+    {
+        effectObj.SetActive(false);
     }
 }

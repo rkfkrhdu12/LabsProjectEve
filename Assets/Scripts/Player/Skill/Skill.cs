@@ -9,7 +9,7 @@ public class Skill
     protected Animator pAnimator;
 
     protected ePlayerAni ani;
-    protected SkillData skillData;
+    protected SkillData data;
 
     public bool isCool;
     public bool isUI;
@@ -20,16 +20,18 @@ public class Skill
     protected float coolTime = 0.0f;
     protected float coolInterval = 1.0f;
 
+    protected MeshRenderer renderer;
+
     public virtual void Init(SkillData skilldata)
     {
         pCtrl = GameManager.Instance.player.GetComponent<PlayerController>();
         pAni = GameManager.Instance.player.GetComponent<PlayerAnimation>();
         pAnimator = pAni.GetComponent<Animator>();
 
-        skillData = skilldata;
+        data = skilldata;
 
         coolTime = 0.0f;
-        coolInterval = skillData.coolTime;
+        coolInterval = data.coolTime;
 
         isCool = false;
         isUI = false;
